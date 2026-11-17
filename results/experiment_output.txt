@@ -1,0 +1,406 @@
+   Compiling hash_table_study v0.1.0 (/home/aditta/Downloads/hash table)
+    Finished `release` profile [optimized] target(s) in 0.47s
+     Running `target/release/experiment`
+============================================================
+ Hash Table Collision Resolution Benchmark Runner
+============================================================
+
+>>> Running benchmarks for table size N = 1000 <<<
+  Generating dataset: distribution = random             ... done (10.44µs)
+    [  1/980] SeparateChaining N=1000    | ins:   59.6 ns/op (tot     59633 ns) | hit:   7.6 ns/op | miss:  13.0 ns/op | del:   5.3 ns/op | coll:     285 | avg_prb:  1.21 | max_prb:   3 | α: 0.49 | mem:   65152 B
+    [  8/980] LinearProbing    N=1000    | ins:   47.6 ns/op (tot     47635 ns) | hit:  22.7 ns/op | miss:  40.7 ns/op | del:  29.2 ns/op | coll:    1155 | avg_prb:  2.15 | max_prb:  15 | α: 0.49 | mem:   49152 B
+    [ 15/980] QuadraticProbing N=1000    | ins:   22.3 ns/op (tot     22346 ns) | hit:  12.8 ns/op | miss:  22.4 ns/op | del:  13.6 ns/op | coll:     616 | avg_prb:  1.62 | max_prb:  11 | α: 0.49 | mem:   48648 B
+    [ 22/980] RobinHood        N=1000    | ins:   51.0 ns/op (tot     50991 ns) | hit:  13.2 ns/op | miss:  22.2 ns/op | del:  18.5 ns/op | coll:    1817 | avg_prb:  1.41 | max_prb:   4 | α: 0.49 | mem:   65536 B
+  Generating dataset: distribution = sequential         ... done (1.67µs)
+    [ 29/980] SeparateChaining N=1000    | ins:   31.5 ns/op (tot     31499 ns) | hit:   5.4 ns/op | miss:  11.8 ns/op | del:   5.1 ns/op | coll:     138 | avg_prb:  1.16 | max_prb:   2 | α: 0.49 | mem:   65152 B
+    [ 36/980] LinearProbing    N=1000    | ins:   13.1 ns/op (tot     13124 ns) | hit:   6.6 ns/op | miss:  22.4 ns/op | del:   7.3 ns/op | coll:     343 | avg_prb:  1.34 | max_prb:  13 | α: 0.49 | mem:   49152 B
+    [ 43/980] QuadraticProbing N=1000    | ins:   23.5 ns/op (tot     23468 ns) | hit:  14.8 ns/op | miss:  23.5 ns/op | del:  14.8 ns/op | coll:    1224 | avg_prb:  2.22 | max_prb:  10 | α: 0.49 | mem:   48648 B
+    [ 50/980] RobinHood        N=1000    | ins:   22.1 ns/op (tot     22096 ns) | hit:   6.6 ns/op | miss:  20.6 ns/op | del:   9.0 ns/op | coll:     676 | avg_prb:  1.21 | max_prb:   2 | α: 0.49 | mem:   65536 B
+  Generating dataset: distribution = reverse_sequential ... done (535.00ns)
+    [ 57/980] SeparateChaining N=1000    | ins:   29.3 ns/op (tot     29336 ns) | hit:   5.5 ns/op | miss:  11.6 ns/op | del:   7.2 ns/op | coll:     138 | avg_prb:  1.16 | max_prb:   2 | α: 0.49 | mem:   65152 B
+    [ 64/980] LinearProbing    N=1000    | ins:   28.0 ns/op (tot     28027 ns) | hit:  11.9 ns/op | miss:  22.5 ns/op | del:   9.5 ns/op | coll:     427 | avg_prb:  1.43 | max_prb:  13 | α: 0.49 | mem:   49152 B
+    [ 71/980] QuadraticProbing N=1000    | ins:   23.4 ns/op (tot     23446 ns) | hit:  18.6 ns/op | miss:  23.6 ns/op | del:  18.9 ns/op | coll:     973 | avg_prb:  1.97 | max_prb:  10 | α: 0.49 | mem:   48648 B
+    [ 78/980] RobinHood        N=1000    | ins:   25.3 ns/op (tot     25339 ns) | hit:   7.3 ns/op | miss:  20.1 ns/op | del:   9.4 ns/op | coll:     835 | avg_prb:  1.21 | max_prb:   2 | α: 0.49 | mem:   65536 B
+  Generating dataset: distribution = clustered          ... done (1.28µs)
+    [ 85/980] SeparateChaining N=1000    | ins:   39.5 ns/op (tot     39504 ns) | hit:   8.4 ns/op | miss:  11.6 ns/op | del:   5.5 ns/op | coll:     294 | avg_prb:  1.26 | max_prb:   4 | α: 0.49 | mem:   65152 B
+    [ 92/980] LinearProbing    N=1000    | ins:   25.8 ns/op (tot     25776 ns) | hit:  12.9 ns/op | miss:  22.9 ns/op | del:  12.9 ns/op | coll:    1326 | avg_prb:  2.33 | max_prb:  26 | α: 0.49 | mem:   49152 B
+    [ 99/980] QuadraticProbing N=1000    | ins:   23.0 ns/op (tot     23024 ns) | hit:  13.5 ns/op | miss:  22.1 ns/op | del:  12.8 ns/op | coll:     610 | avg_prb:  1.61 | max_prb:  10 | α: 0.49 | mem:   48648 B
+    [106/980] RobinHood        N=1000    | ins:   54.9 ns/op (tot     54929 ns) | hit:  14.9 ns/op | miss:  22.4 ns/op | del:  19.6 ns/op | coll:    2034 | avg_prb:  1.50 | max_prb:   6 | α: 0.49 | mem:   65536 B
+  Generating dataset: distribution = duplicate_heavy    ... done (10.74µs)
+    [113/980] SeparateChaining N=1000    | ins:    9.2 ns/op (tot      9193 ns) | hit:   4.8 ns/op | miss:   5.3 ns/op | del:   5.1 ns/op | coll:       6 | avg_prb:  1.06 | max_prb:   2 | α: 0.10 | mem:   26176 B
+    [120/980] LinearProbing    N=1000    | ins:    7.6 ns/op (tot      7606 ns) | hit:   6.3 ns/op | miss:   7.5 ns/op | del:  13.4 ns/op | coll:      33 | avg_prb:  1.08 | max_prb:   5 | α: 0.10 | mem:   24576 B
+    [127/980] QuadraticProbing N=1000    | ins:    7.5 ns/op (tot      7458 ns) | hit:   6.3 ns/op | miss:   7.7 ns/op | del:  11.0 ns/op | coll:       5 | avg_prb:  1.05 | max_prb:   2 | α: 0.10 | mem:   24216 B
+    [134/980] RobinHood        N=1000    | ins:   10.3 ns/op (tot     10304 ns) | hit:   7.5 ns/op | miss:   8.1 ns/op | del:   7.4 ns/op | coll:      85 | avg_prb:  1.09 | max_prb:   3 | α: 0.10 | mem:   32768 B
+  Generating dataset: distribution = small_range        ... done (4.06µs)
+    [141/980] SeparateChaining N=1000    | ins:   20.3 ns/op (tot     20278 ns) | hit:   5.6 ns/op | miss:  12.4 ns/op | del:  10.1 ns/op | coll:      62 | avg_prb:  1.11 | max_prb:   2 | α: 0.62 | mem:   34768 B
+    [148/980] LinearProbing    N=1000    | ins:   14.7 ns/op (tot     14700 ns) | hit:   8.5 ns/op | miss:  27.7 ns/op | del:  23.4 ns/op | coll:     229 | avg_prb:  1.25 | max_prb:  24 | α: 0.62 | mem:   24576 B
+    [155/980] QuadraticProbing N=1000    | ins:   34.0 ns/op (tot     33965 ns) | hit:  16.5 ns/op | miss:  14.6 ns/op | del:  24.8 ns/op | coll:     471 | avg_prb:  1.58 | max_prb:   6 | α: 0.31 | mem:   48648 B
+    [162/980] RobinHood        N=1000    | ins:   21.2 ns/op (tot     21182 ns) | hit:  11.6 ns/op | miss:  22.7 ns/op | del:  18.7 ns/op | coll:     323 | avg_prb:  1.32 | max_prb:   5 | α: 0.62 | mem:   32768 B
+  Generating dataset: distribution = collision_heavy    ... done (651.00ns)
+    [169/980] SeparateChaining N=1000    | ins:   28.0 ns/op (tot     27985 ns) | hit:   5.7 ns/op | miss:   6.5 ns/op | del:   5.6 ns/op | coll:     555 | avg_prb:  2.25 | max_prb:   4 | α: 0.49 | mem:   65152 B
+    [176/980] LinearProbing    N=1000    | ins:   17.6 ns/op (tot     17595 ns) | hit:   9.7 ns/op | miss:  18.0 ns/op | del:  10.3 ns/op | coll:    1529 | avg_prb:  2.53 | max_prb:  14 | α: 0.49 | mem:   49152 B
+    [183/980] QuadraticProbing N=1000    | ins:   17.2 ns/op (tot     17249 ns) | hit:   8.1 ns/op | miss:  17.1 ns/op | del:   8.5 ns/op | coll:     357 | avg_prb:  1.36 | max_prb:   6 | α: 0.49 | mem:   48648 B
+    [190/980] RobinHood        N=1000    | ins:   38.3 ns/op (tot     38340 ns) | hit:  13.2 ns/op | miss:  15.6 ns/op | del:  14.3 ns/op | coll:    2928 | avg_prb:  2.16 | max_prb:   5 | α: 0.49 | mem:   65536 B
+
+>>> Running benchmarks for table size N = 10000 <<<
+  Generating dataset: distribution = random             ... done (44.30µs)
+    [197/980] SeparateChaining N=10000   | ins:   32.1 ns/op (tot    321365 ns) | hit:  10.2 ns/op | miss:  14.4 ns/op | del:   6.5 ns/op | coll:    2472 | avg_prb:  1.33 | max_prb:   5 | α: 0.61 | mem:  553216 B
+    [204/980] LinearProbing    N=10000   | ins:   15.2 ns/op (tot    152234 ns) | hit:  15.7 ns/op | miss:  29.0 ns/op | del:  15.8 ns/op | coll:    7814 | avg_prb:  1.78 | max_prb:  47 | α: 0.61 | mem:  393216 B
+    [211/980] QuadraticProbing N=10000   | ins:   32.3 ns/op (tot    323498 ns) | hit:  13.3 ns/op | miss:  24.4 ns/op | del:  13.3 ns/op | coll:    5454 | avg_prb:  1.55 | max_prb:  13 | α: 0.50 | mem:  480504 B
+    [218/980] RobinHood        N=10000   | ins:   26.0 ns/op (tot    260377 ns) | hit:  19.3 ns/op | miss:  26.5 ns/op | del:  21.3 ns/op | coll:   10810 | avg_prb:  1.78 | max_prb:  10 | α: 0.61 | mem:  524288 B
+  Generating dataset: distribution = sequential         ... done (3.32µs)
+    [225/980] SeparateChaining N=10000   | ins:   17.3 ns/op (tot    173485 ns) | hit:   8.8 ns/op | miss:  11.3 ns/op | del:   6.5 ns/op | coll:    4773 | avg_prb:  1.91 | max_prb:   3 | α: 0.61 | mem:  553216 B
+    [232/980] LinearProbing    N=10000   | ins:   13.7 ns/op (tot    136541 ns) | hit:  13.6 ns/op | miss:  29.0 ns/op | del:  14.2 ns/op | coll:    9424 | avg_prb:  1.94 | max_prb:  38 | α: 0.61 | mem:  393216 B
+    [239/980] QuadraticProbing N=10000   | ins:   23.1 ns/op (tot    231495 ns) | hit:  12.0 ns/op | miss:  24.6 ns/op | del:  12.4 ns/op | coll:   12655 | avg_prb:  2.27 | max_prb:  11 | α: 0.50 | mem:  480504 B
+    [246/980] RobinHood        N=10000   | ins:   25.7 ns/op (tot    257074 ns) | hit:  16.8 ns/op | miss:  26.7 ns/op | del:  20.3 ns/op | coll:   14825 | avg_prb:  1.94 | max_prb:   8 | α: 0.61 | mem:  524288 B
+  Generating dataset: distribution = reverse_sequential ... done (3.22µs)
+    [253/980] SeparateChaining N=10000   | ins:   17.7 ns/op (tot    176662 ns) | hit:   9.0 ns/op | miss:  11.0 ns/op | del:   6.3 ns/op | coll:    4773 | avg_prb:  1.91 | max_prb:   3 | α: 0.61 | mem:  553216 B
+    [260/980] LinearProbing    N=10000   | ins:   16.1 ns/op (tot    161059 ns) | hit:  16.2 ns/op | miss:  28.8 ns/op | del:  16.8 ns/op | coll:    9424 | avg_prb:  1.94 | max_prb:  38 | α: 0.61 | mem:  393216 B
+    [267/980] QuadraticProbing N=10000   | ins:   25.3 ns/op (tot    252939 ns) | hit:  13.4 ns/op | miss:  24.0 ns/op | del:  12.5 ns/op | coll:   11412 | avg_prb:  2.14 | max_prb:  13 | α: 0.50 | mem:  480504 B
+    [274/980] RobinHood        N=10000   | ins:   23.4 ns/op (tot    233567 ns) | hit:  17.4 ns/op | miss:  26.2 ns/op | del:  17.3 ns/op | coll:   14641 | avg_prb:  1.94 | max_prb:   8 | α: 0.61 | mem:  524288 B
+  Generating dataset: distribution = clustered          ... done (8.89µs)
+    [281/980] SeparateChaining N=10000   | ins:   19.9 ns/op (tot    198677 ns) | hit:  10.2 ns/op | miss:  14.3 ns/op | del:   6.9 ns/op | coll:    2539 | avg_prb:  1.34 | max_prb:   6 | α: 0.61 | mem:  553216 B
+    [288/980] LinearProbing    N=10000   | ins:   15.3 ns/op (tot    153249 ns) | hit:  15.2 ns/op | miss:  28.3 ns/op | del:  15.5 ns/op | coll:    8046 | avg_prb:  1.80 | max_prb:  48 | α: 0.61 | mem:  393216 B
+    [295/980] QuadraticProbing N=10000   | ins:   21.9 ns/op (tot    218821 ns) | hit:  13.0 ns/op | miss:  23.8 ns/op | del:  13.1 ns/op | coll:    5705 | avg_prb:  1.57 | max_prb:  13 | α: 0.50 | mem:  480504 B
+    [302/980] RobinHood        N=10000   | ins:   26.1 ns/op (tot    260638 ns) | hit:  18.9 ns/op | miss:  26.6 ns/op | del:  21.2 ns/op | coll:   11115 | avg_prb:  1.80 | max_prb:  11 | α: 0.61 | mem:  524288 B
+  Generating dataset: distribution = duplicate_heavy    ... done (94.68µs)
+    [309/980] SeparateChaining N=10000   | ins:    5.0 ns/op (tot     49542 ns) | hit:   3.9 ns/op | miss:   4.1 ns/op | del:   3.6 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.01 | mem:  394816 B
+    [316/980] LinearProbing    N=10000   | ins:    4.9 ns/op (tot     48764 ns) | hit:   4.7 ns/op | miss:   5.2 ns/op | del:   6.0 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.01 | mem:  393216 B
+    [323/980] QuadraticProbing N=10000   | ins:    4.7 ns/op (tot     46500 ns) | hit:   4.9 ns/op | miss:   5.4 ns/op | del:   6.2 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.01 | mem:  240168 B
+    [330/980] RobinHood        N=10000   | ins:    6.3 ns/op (tot     62551 ns) | hit:   5.0 ns/op | miss:   5.3 ns/op | del:   4.7 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.01 | mem:  524288 B
+  Generating dataset: distribution = small_range        ... done (38.48µs)
+    [337/980] SeparateChaining N=10000   | ins:   10.7 ns/op (tot    106821 ns) | hit:   6.6 ns/op | miss:   3.7 ns/op | del:   4.9 ns/op | coll:     138 | avg_prb:  1.16 | max_prb:   2 | α: 0.06 | mem:  409216 B
+    [344/980] LinearProbing    N=10000   | ins:   11.7 ns/op (tot    116675 ns) | hit:   7.6 ns/op | miss:   5.4 ns/op | del:  12.5 ns/op | coll:     138 | avg_prb:  1.14 | max_prb:   2 | α: 0.06 | mem:  393216 B
+    [351/980] QuadraticProbing N=10000   | ins:    7.7 ns/op (tot     77337 ns) | hit:   6.9 ns/op | miss:   9.7 ns/op | del:  11.0 ns/op | coll:      94 | avg_prb:  1.09 | max_prb:   2 | α: 0.10 | mem:  240168 B
+    [358/980] RobinHood        N=10000   | ins:   11.1 ns/op (tot    111429 ns) | hit:   8.0 ns/op | miss:   5.4 ns/op | del:   7.0 ns/op | coll:    1493 | avg_prb:  1.14 | max_prb:   2 | α: 0.06 | mem:  524288 B
+  Generating dataset: distribution = collision_heavy    ... done (3.03µs)
+    [365/980] SeparateChaining N=10000   | ins:   16.1 ns/op (tot    161254 ns) | hit:   5.7 ns/op | miss:   7.1 ns/op | del:   5.5 ns/op | coll:    1664 | avg_prb:  1.20 | max_prb:   3 | α: 0.61 | mem:  553216 B
+    [372/980] LinearProbing    N=10000   | ins:    8.0 ns/op (tot     79713 ns) | hit:   8.1 ns/op | miss:  21.6 ns/op | del:   8.5 ns/op | coll:    4332 | avg_prb:  1.43 | max_prb:  15 | α: 0.61 | mem:  393216 B
+    [379/980] QuadraticProbing N=10000   | ins:   24.4 ns/op (tot    243798 ns) | hit:  11.0 ns/op | miss:  21.5 ns/op | del:  11.4 ns/op | coll:    5565 | avg_prb:  1.56 | max_prb:   8 | α: 0.50 | mem:  480504 B
+    [386/980] RobinHood        N=10000   | ins:   13.7 ns/op (tot    136848 ns) | hit:  10.5 ns/op | miss:  16.5 ns/op | del:  12.6 ns/op | coll:    6209 | avg_prb:  1.43 | max_prb:   4 | α: 0.61 | mem:  524288 B
+
+>>> Running benchmarks for table size N = 100000 <<<
+  Generating dataset: distribution = random             ... done (621.18µs)
+    [393/980] SeparateChaining N=100000  | ins:   74.1 ns/op (tot   7413394 ns) | hit:  15.7 ns/op | miss:  12.1 ns/op | del:  14.4 ns/op | coll:   29530 | avg_prb:  1.20 | max_prb:   5 | α: 0.38 | mem: 7891456 B
+    [400/980] LinearProbing    N=100000  | ins:   36.5 ns/op (tot   3654726 ns) | hit:  12.5 ns/op | miss:  20.9 ns/op | del:  14.1 ns/op | coll:  114921 | avg_prb:  2.15 | max_prb:  25 | α: 0.38 | mem: 6291456 B
+    [407/980] QuadraticProbing N=100000  | ins:   25.4 ns/op (tot   2535054 ns) | hit:  14.8 ns/op | miss:  28.1 ns/op | del:  15.7 ns/op | coll:   55941 | avg_prb:  1.56 | max_prb:  15 | α: 0.50 | mem: 4800216 B
+    [414/980] RobinHood        N=100000  | ins:   60.7 ns/op (tot   6073831 ns) | hit:  13.9 ns/op | miss:  19.5 ns/op | del:  17.8 ns/op | coll:  194811 | avg_prb:  1.31 | max_prb:   7 | α: 0.38 | mem: 8388608 B
+  Generating dataset: distribution = sequential         ... done (108.80µs)
+    [421/980] SeparateChaining N=100000  | ins:   54.6 ns/op (tot   5462884 ns) | hit:  12.5 ns/op | miss:  14.5 ns/op | del:  16.1 ns/op | coll:   22889 | avg_prb:  1.03 | max_prb:   2 | α: 0.38 | mem: 7891456 B
+    [428/980] LinearProbing    N=100000  | ins:   21.1 ns/op (tot   2110272 ns) | hit:   7.4 ns/op | miss:  18.8 ns/op | del:  12.1 ns/op | coll:   59641 | avg_prb:  1.60 | max_prb:   9 | α: 0.38 | mem: 6291456 B
+    [435/980] QuadraticProbing N=100000  | ins:   27.0 ns/op (tot   2700601 ns) | hit:  16.0 ns/op | miss:  27.2 ns/op | del:  16.9 ns/op | coll:  100461 | avg_prb:  2.00 | max_prb:  13 | α: 0.50 | mem: 4800216 B
+    [442/980] RobinHood        N=100000  | ins:   38.1 ns/op (tot   3812429 ns) | hit:   7.9 ns/op | miss:  18.1 ns/op | del:  12.3 ns/op | coll:   84547 | avg_prb:  1.04 | max_prb:   2 | α: 0.38 | mem: 8388608 B
+  Generating dataset: distribution = reverse_sequential ... done (67.99µs)
+    [449/980] SeparateChaining N=100000  | ins:   50.2 ns/op (tot   5017709 ns) | hit:  11.5 ns/op | miss:  13.2 ns/op | del:  14.8 ns/op | coll:   21985 | avg_prb:  1.03 | max_prb:   2 | α: 0.38 | mem: 7891456 B
+    [456/980] LinearProbing    N=100000  | ins:   31.4 ns/op (tot   3138253 ns) | hit:   7.2 ns/op | miss:  18.2 ns/op | del:  11.4 ns/op | coll:   62869 | avg_prb:  1.63 | max_prb:   9 | α: 0.38 | mem: 6291456 B
+    [463/980] QuadraticProbing N=100000  | ins:   29.7 ns/op (tot   2968844 ns) | hit:  17.8 ns/op | miss:  26.9 ns/op | del:  17.8 ns/op | coll:   98310 | avg_prb:  1.98 | max_prb:  11 | α: 0.50 | mem: 4800216 B
+    [470/980] RobinHood        N=100000  | ins:   45.3 ns/op (tot   4534178 ns) | hit:   7.7 ns/op | miss:  17.6 ns/op | del:  11.7 ns/op | coll:   91956 | avg_prb:  1.04 | max_prb:   2 | α: 0.38 | mem: 8388608 B
+  Generating dataset: distribution = clustered          ... done (124.32µs)
+    [477/980] SeparateChaining N=100000  | ins:   54.1 ns/op (tot   5414423 ns) | hit:  12.9 ns/op | miss:  11.7 ns/op | del:  15.3 ns/op | coll:   29613 | avg_prb:  1.20 | max_prb:   6 | α: 0.38 | mem: 7891456 B
+    [484/980] LinearProbing    N=100000  | ins:   31.8 ns/op (tot   3176958 ns) | hit:  12.6 ns/op | miss:  20.3 ns/op | del:  14.0 ns/op | coll:  113020 | avg_prb:  2.13 | max_prb:  28 | α: 0.38 | mem: 6291456 B
+    [491/980] QuadraticProbing N=100000  | ins:   24.7 ns/op (tot   2469433 ns) | hit:  15.0 ns/op | miss:  28.6 ns/op | del:  15.6 ns/op | coll:   56616 | avg_prb:  1.57 | max_prb:  15 | α: 0.50 | mem: 4800216 B
+    [498/980] RobinHood        N=100000  | ins:   59.3 ns/op (tot   5930403 ns) | hit:  12.9 ns/op | miss:  19.6 ns/op | del:  18.8 ns/op | coll:  192839 | avg_prb:  1.31 | max_prb:   8 | α: 0.38 | mem: 8388608 B
+  Generating dataset: distribution = duplicate_heavy    ... done (912.70µs)
+    [505/980] SeparateChaining N=100000  | ins:    4.5 ns/op (tot    448344 ns) | hit:   3.8 ns/op | miss:   5.4 ns/op | del:   3.2 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 3147328 B
+    [512/980] LinearProbing    N=100000  | ins:    4.8 ns/op (tot    482768 ns) | hit:   5.1 ns/op | miss:   7.2 ns/op | del:   5.9 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 3145728 B
+    [519/980] QuadraticProbing N=100000  | ins:    4.6 ns/op (tot    460690 ns) | hit:   5.1 ns/op | miss:   7.0 ns/op | del:   6.3 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 2400072 B
+    [526/980] RobinHood        N=100000  | ins:    6.1 ns/op (tot    609840 ns) | hit:   5.1 ns/op | miss:   8.7 ns/op | del:   4.7 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 4194304 B
+  Generating dataset: distribution = small_range        ... done (707.98µs)
+    [533/980] SeparateChaining N=100000  | ins:    5.4 ns/op (tot    536660 ns) | hit:   4.6 ns/op | miss:   3.9 ns/op | del:   3.6 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.01 | mem: 3161728 B
+    [540/980] LinearProbing    N=100000  | ins:    5.2 ns/op (tot    519616 ns) | hit:   5.2 ns/op | miss:   5.2 ns/op | del:   6.3 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.01 | mem: 3145728 B
+    [547/980] QuadraticProbing N=100000  | ins:    4.8 ns/op (tot    475265 ns) | hit:   5.4 ns/op | miss:   5.6 ns/op | del:   6.4 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.01 | mem: 2400072 B
+    [554/980] RobinHood        N=100000  | ins:    6.6 ns/op (tot    659355 ns) | hit:   5.5 ns/op | miss:   5.2 ns/op | del:   4.9 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.01 | mem: 4194304 B
+  Generating dataset: distribution = collision_heavy    ... done (30.58µs)
+    [561/980] SeparateChaining N=100000  | ins:   52.4 ns/op (tot   5238637 ns) | hit:  14.4 ns/op | miss:   6.6 ns/op | del:  13.1 ns/op | coll:   46387 | avg_prb:  1.87 | max_prb:   5 | α: 0.38 | mem: 7891456 B
+    [568/980] LinearProbing    N=100000  | ins:   29.3 ns/op (tot   2929835 ns) | hit:  14.8 ns/op | miss:  10.3 ns/op | del:  16.6 ns/op | coll:  126239 | avg_prb:  2.26 | max_prb:  12 | α: 0.38 | mem: 6291456 B
+    [575/980] QuadraticProbing N=100000  | ins:   29.1 ns/op (tot   2905558 ns) | hit:  16.8 ns/op | miss:  31.5 ns/op | del:  17.6 ns/op | coll:  105617 | avg_prb:  2.06 | max_prb:  17 | α: 0.50 | mem: 4800216 B
+    [582/980] RobinHood        N=100000  | ins:   55.5 ns/op (tot   5546767 ns) | hit:  18.9 ns/op | miss:  10.2 ns/op | del:  19.4 ns/op | coll:  275320 | avg_prb:  1.70 | max_prb:   6 | α: 0.38 | mem: 8388608 B
+
+>>> Running benchmarks for table size N = 500000 <<<
+  Generating dataset: distribution = random             ... done (1.50ms)
+    [589/980] SeparateChaining N=500000  | ins:   91.8 ns/op (tot  45878291 ns) | hit:  34.0 ns/op | miss:  26.5 ns/op | del:  33.3 ns/op | coll:  153612 | avg_prb:  1.26 | max_prb:   6 | α: 0.48 | mem: 33165824 B
+    [596/980] LinearProbing    N=500000  | ins:   42.2 ns/op (tot  21097569 ns) | hit:  22.0 ns/op | miss:  35.0 ns/op | del:  22.8 ns/op | coll:  552337 | avg_prb:  2.10 | max_prb:  51 | α: 0.48 | mem: 25165824 B
+    [603/980] QuadraticProbing N=500000  | ins:   38.6 ns/op (tot  19284017 ns) | hit:  21.5 ns/op | miss:  35.0 ns/op | del:  22.2 ns/op | coll:  282189 | avg_prb:  1.56 | max_prb:  19 | α: 0.50 | mem: 24000792 B
+    [610/980] RobinHood        N=500000  | ins:   64.3 ns/op (tot  32128993 ns) | hit:  26.6 ns/op | miss:  35.9 ns/op | del:  34.5 ns/op | coll:  915688 | avg_prb:  1.46 | max_prb:  10 | α: 0.48 | mem: 33554432 B
+  Generating dataset: distribution = sequential         ... done (572.93µs)
+    [617/980] SeparateChaining N=500000  | ins:  101.1 ns/op (tot  50561927 ns) | hit:  32.1 ns/op | miss:  28.7 ns/op | del:  34.3 ns/op | coll:   98217 | avg_prb:  1.11 | max_prb:   2 | α: 0.48 | mem: 33165824 B
+    [624/980] LinearProbing    N=500000  | ins:   29.6 ns/op (tot  14789787 ns) | hit:  17.9 ns/op | miss:  32.6 ns/op | del:  17.9 ns/op | coll:  319381 | avg_prb:  1.64 | max_prb:  17 | α: 0.48 | mem: 25165824 B
+    [631/980] QuadraticProbing N=500000  | ins:   34.1 ns/op (tot  17066495 ns) | hit:  18.7 ns/op | miss:  33.7 ns/op | del:  18.3 ns/op | coll:  194752 | avg_prb:  1.39 | max_prb:  18 | α: 0.50 | mem: 24000792 B
+    [638/980] RobinHood        N=500000  | ins:   43.5 ns/op (tot  21725864 ns) | hit:  21.4 ns/op | miss:  34.0 ns/op | del:  27.2 ns/op | coll:  482164 | avg_prb:  1.15 | max_prb:   3 | α: 0.48 | mem: 33554432 B
+  Generating dataset: distribution = reverse_sequential ... done (517.12µs)
+    [645/980] SeparateChaining N=500000  | ins:   86.8 ns/op (tot  43383446 ns) | hit:  31.4 ns/op | miss:  27.5 ns/op | del:  33.0 ns/op | coll:   98297 | avg_prb:  1.11 | max_prb:   2 | α: 0.48 | mem: 33165824 B
+    [652/980] LinearProbing    N=500000  | ins:   37.3 ns/op (tot  18646359 ns) | hit:  18.1 ns/op | miss:  33.3 ns/op | del:  18.3 ns/op | coll:  328497 | avg_prb:  1.66 | max_prb:  17 | α: 0.48 | mem: 25165824 B
+    [659/980] QuadraticProbing N=500000  | ins:   33.9 ns/op (tot  16946333 ns) | hit:  21.6 ns/op | miss:  36.7 ns/op | del:  19.5 ns/op | coll:  198499 | avg_prb:  1.40 | max_prb:  14 | α: 0.50 | mem: 24000792 B
+    [666/980] RobinHood        N=500000  | ins:   49.7 ns/op (tot  24837558 ns) | hit:  21.7 ns/op | miss:  33.7 ns/op | del:  29.8 ns/op | coll:  509389 | avg_prb:  1.15 | max_prb:   3 | α: 0.48 | mem: 33554432 B
+  Generating dataset: distribution = clustered          ... done (774.41µs)
+    [673/980] SeparateChaining N=500000  | ins:   85.1 ns/op (tot  42533125 ns) | hit:  36.3 ns/op | miss:  26.6 ns/op | del:  33.7 ns/op | coll:  153482 | avg_prb:  1.26 | max_prb:   7 | α: 0.48 | mem: 33165824 B
+    [680/980] LinearProbing    N=500000  | ins:   42.2 ns/op (tot  21097906 ns) | hit:  22.2 ns/op | miss:  35.4 ns/op | del:  24.5 ns/op | coll:  559303 | avg_prb:  2.12 | max_prb:  38 | α: 0.48 | mem: 25165824 B
+    [687/980] QuadraticProbing N=500000  | ins:   39.4 ns/op (tot  19694612 ns) | hit:  23.1 ns/op | miss:  36.7 ns/op | del:  22.6 ns/op | coll:  281976 | avg_prb:  1.56 | max_prb:  19 | α: 0.50 | mem: 24000792 B
+    [694/980] RobinHood        N=500000  | ins:   65.0 ns/op (tot  32484931 ns) | hit:  26.7 ns/op | miss:  36.0 ns/op | del:  34.6 ns/op | coll:  922105 | avg_prb:  1.45 | max_prb:  10 | α: 0.48 | mem: 33554432 B
+  Generating dataset: distribution = duplicate_heavy    ... done (4.69ms)
+    [701/980] SeparateChaining N=500000  | ins:    4.4 ns/op (tot   2212526 ns) | hit:   3.8 ns/op | miss:   6.8 ns/op | del:   3.2 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 12584512 B
+    [708/980] LinearProbing    N=500000  | ins:    4.8 ns/op (tot   2400778 ns) | hit:   4.8 ns/op | miss:  10.3 ns/op | del:   6.1 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 12582912 B
+    [715/980] QuadraticProbing N=500000  | ins:    4.6 ns/op (tot   2281977 ns) | hit:   5.1 ns/op | miss:  14.8 ns/op | del:   6.1 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 12000216 B
+    [722/980] RobinHood        N=500000  | ins:    6.2 ns/op (tot   3121897 ns) | hit:   5.0 ns/op | miss:  10.7 ns/op | del:   4.5 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 16777216 B
+  Generating dataset: distribution = small_range        ... done (1.84ms)
+    [729/980] SeparateChaining N=500000  | ins:    5.5 ns/op (tot   2769045 ns) | hit:   4.6 ns/op | miss:   3.9 ns/op | del:   3.5 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 12598912 B
+    [736/980] LinearProbing    N=500000  | ins:    5.1 ns/op (tot   2572366 ns) | hit:   5.2 ns/op | miss:   5.3 ns/op | del:   6.2 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 12582912 B
+    [743/980] QuadraticProbing N=500000  | ins:    5.0 ns/op (tot   2488459 ns) | hit:   5.4 ns/op | miss:   5.6 ns/op | del:   6.5 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 12000216 B
+    [750/980] RobinHood        N=500000  | ins:    6.3 ns/op (tot   3155649 ns) | hit:   5.4 ns/op | miss:   5.2 ns/op | del:   4.8 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 16777216 B
+  Generating dataset: distribution = collision_heavy    ... done (328.48µs)
+    [757/980] SeparateChaining N=500000  | ins:   99.1 ns/op (tot  49536074 ns) | hit:  32.8 ns/op | miss:  27.7 ns/op | del:  34.3 ns/op | coll:  160243 | avg_prb:  1.13 | max_prb:   2 | α: 0.48 | mem: 33165824 B
+    [764/980] LinearProbing    N=500000  | ins:   38.6 ns/op (tot  19298988 ns) | hit:  18.5 ns/op | miss:  26.6 ns/op | del:  19.4 ns/op | coll:  316782 | avg_prb:  1.63 | max_prb:  10 | α: 0.48 | mem: 25165824 B
+    [771/980] QuadraticProbing N=500000  | ins:   39.6 ns/op (tot  19819573 ns) | hit:  23.3 ns/op | miss:  34.6 ns/op | del:  23.2 ns/op | coll:  375013 | avg_prb:  1.75 | max_prb:  15 | α: 0.50 | mem: 24000792 B
+    [778/980] RobinHood        N=500000  | ins:   47.0 ns/op (tot  23476930 ns) | hit:  22.9 ns/op | miss:  28.3 ns/op | del:  27.8 ns/op | coll:  592837 | avg_prb:  1.18 | max_prb:   3 | α: 0.48 | mem: 33554432 B
+
+>>> Running benchmarks for table size N = 1000000 <<<
+  Generating dataset: distribution = random             ... done (3.22ms)
+    [785/980] SeparateChaining N=1000000 | ins:  106.6 ns/op (tot 106607747 ns) | hit:  38.8 ns/op | miss:  31.4 ns/op | del:  39.6 ns/op | coll:  306962 | avg_prb:  1.26 | max_prb:   7 | α: 0.48 | mem: 66331648 B
+    [792/980] LinearProbing    N=1000000 | ins:   45.1 ns/op (tot  45132222 ns) | hit:  28.3 ns/op | miss:  43.8 ns/op | del:  29.3 ns/op | coll: 1108949 | avg_prb:  2.11 | max_prb:  42 | α: 0.48 | mem: 50331648 B
+    [799/980] QuadraticProbing N=1000000 | ins:   47.1 ns/op (tot  47053184 ns) | hit:  29.6 ns/op | miss:  46.8 ns/op | del:  30.3 ns/op | coll:  564055 | avg_prb:  1.56 | max_prb:  20 | α: 0.50 | mem: 48000696 B
+    [806/980] RobinHood        N=1000000 | ins:   73.9 ns/op (tot  73924747 ns) | hit:  30.9 ns/op | miss:  40.5 ns/op | del:  39.5 ns/op | coll: 1835557 | avg_prb:  1.45 | max_prb:  12 | α: 0.48 | mem: 67108864 B
+  Generating dataset: distribution = sequential         ... done (1.08ms)
+    [813/980] SeparateChaining N=1000000 | ins:  101.4 ns/op (tot 101402669 ns) | hit:  32.9 ns/op | miss:  35.0 ns/op | del:  37.3 ns/op | coll:  126705 | avg_prb:  1.00 | max_prb:   1 | α: 0.48 | mem: 66331648 B
+    [820/980] LinearProbing    N=1000000 | ins:   30.9 ns/op (tot  30871497 ns) | hit:  21.5 ns/op | miss:  37.6 ns/op | del:  22.3 ns/op | coll:  261234 | avg_prb:  1.26 | max_prb:  11 | α: 0.48 | mem: 50331648 B
+    [827/980] QuadraticProbing N=1000000 | ins:   41.8 ns/op (tot  41797237 ns) | hit:  25.8 ns/op | miss:  45.3 ns/op | del:  26.2 ns/op | coll:  330803 | avg_prb:  1.33 | max_prb:  15 | α: 0.50 | mem: 48000696 B
+    [834/980] RobinHood        N=1000000 | ins:   44.3 ns/op (tot  44290252 ns) | hit:  22.8 ns/op | miss:  36.7 ns/op | del:  30.0 ns/op | coll:  397434 | avg_prb:  1.00 | max_prb:   1 | α: 0.48 | mem: 67108864 B
+  Generating dataset: distribution = reverse_sequential ... done (1.16ms)
+    [841/980] SeparateChaining N=1000000 | ins:  102.0 ns/op (tot 101991941 ns) | hit:  32.8 ns/op | miss:  34.5 ns/op | del:  37.1 ns/op | coll:  134091 | avg_prb:  1.00 | max_prb:   1 | α: 0.48 | mem: 66331648 B
+    [848/980] LinearProbing    N=1000000 | ins:   31.4 ns/op (tot  31419193 ns) | hit:  21.4 ns/op | miss:  37.7 ns/op | del:  22.4 ns/op | coll:  368716 | avg_prb:  1.37 | max_prb:  11 | α: 0.48 | mem: 50331648 B
+    [855/980] QuadraticProbing N=1000000 | ins:   41.1 ns/op (tot  41142619 ns) | hit:  25.6 ns/op | miss:  45.6 ns/op | del:  26.6 ns/op | coll:  416840 | avg_prb:  1.42 | max_prb:  15 | α: 0.50 | mem: 48000696 B
+    [862/980] RobinHood        N=1000000 | ins:   47.7 ns/op (tot  47732806 ns) | hit:  22.8 ns/op | miss:  37.5 ns/op | del:  30.4 ns/op | coll:  517829 | avg_prb:  1.00 | max_prb:   1 | α: 0.48 | mem: 67108864 B
+  Generating dataset: distribution = clustered          ... done (1.42ms)
+    [869/980] SeparateChaining N=1000000 | ins:  101.2 ns/op (tot 101189196 ns) | hit:  38.6 ns/op | miss:  31.4 ns/op | del:  39.1 ns/op | coll:  306335 | avg_prb:  1.26 | max_prb:   7 | α: 0.48 | mem: 66331648 B
+    [876/980] LinearProbing    N=1000000 | ins:   43.0 ns/op (tot  43025426 ns) | hit:  27.9 ns/op | miss:  43.7 ns/op | del:  28.9 ns/op | coll: 1103896 | avg_prb:  2.10 | max_prb:  39 | α: 0.48 | mem: 50331648 B
+    [883/980] QuadraticProbing N=1000000 | ins:   45.7 ns/op (tot  45706415 ns) | hit:  29.2 ns/op | miss:  46.3 ns/op | del:  30.4 ns/op | coll:  564995 | avg_prb:  1.56 | max_prb:  17 | α: 0.50 | mem: 48000696 B
+    [890/980] RobinHood        N=1000000 | ins:   73.3 ns/op (tot  73292110 ns) | hit:  30.7 ns/op | miss:  40.3 ns/op | del:  39.4 ns/op | coll: 1826904 | avg_prb:  1.45 | max_prb:  11 | α: 0.48 | mem: 67108864 B
+  Generating dataset: distribution = duplicate_heavy    ... done (8.99ms)
+    [897/980] SeparateChaining N=1000000 | ins:    4.4 ns/op (tot   4422019 ns) | hit:   3.7 ns/op | miss:  13.6 ns/op | del:   3.3 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 25167424 B
+    [904/980] LinearProbing    N=1000000 | ins:    4.9 ns/op (tot   4862260 ns) | hit:   4.9 ns/op | miss:  17.3 ns/op | del:   5.9 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 25165824 B
+    [911/980] QuadraticProbing N=1000000 | ins:    4.6 ns/op (tot   4575849 ns) | hit:   5.1 ns/op | miss:  19.1 ns/op | del:   6.1 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 24000072 B
+    [918/980] RobinHood        N=1000000 | ins:    6.1 ns/op (tot   6082584 ns) | hit:   4.9 ns/op | miss:  18.7 ns/op | del:   4.5 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 33554432 B
+  Generating dataset: distribution = small_range        ... done (3.80ms)
+    [925/980] SeparateChaining N=1000000 | ins:    5.2 ns/op (tot   5195817 ns) | hit:   4.8 ns/op | miss:   4.1 ns/op | del:   3.6 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 25181824 B
+    [932/980] LinearProbing    N=1000000 | ins:    5.3 ns/op (tot   5317048 ns) | hit:   5.5 ns/op | miss:   5.5 ns/op | del:   6.4 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 25165824 B
+    [939/980] QuadraticProbing N=1000000 | ins:    4.9 ns/op (tot   4916346 ns) | hit:   5.6 ns/op | miss:   5.6 ns/op | del:   6.6 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 24000072 B
+    [946/980] RobinHood        N=1000000 | ins:    6.2 ns/op (tot   6227902 ns) | hit:   5.3 ns/op | miss:   5.1 ns/op | del:   4.7 ns/op | coll:       0 | avg_prb:  1.00 | max_prb:   1 | α: 0.00 | mem: 33554432 B
+  Generating dataset: distribution = collision_heavy    ... done (1.06ms)
+    [953/980] SeparateChaining N=1000000 | ins:  118.2 ns/op (tot 118217730 ns) | hit:  35.7 ns/op | miss:  29.8 ns/op | del:  38.4 ns/op | coll:  183388 | avg_prb:  1.09 | max_prb:   2 | α: 0.48 | mem: 66331648 B
+    [960/980] LinearProbing    N=1000000 | ins:   36.9 ns/op (tot  36875185 ns) | hit:  24.2 ns/op | miss:  35.9 ns/op | del:  25.4 ns/op | coll:  573119 | avg_prb:  1.57 | max_prb:   9 | α: 0.48 | mem: 50331648 B
+    [967/980] QuadraticProbing N=1000000 | ins:   55.4 ns/op (tot  55359962 ns) | hit:  31.4 ns/op | miss:  45.3 ns/op | del:  32.7 ns/op | coll: 1828218 | avg_prb:  2.83 | max_prb:  19 | α: 0.50 | mem: 48000696 B
+    [974/980] RobinHood        N=1000000 | ins:   54.1 ns/op (tot  54113084 ns) | hit:  27.4 ns/op | miss:  34.1 ns/op | del:  34.4 ns/op | coll:  944429 | avg_prb:  1.26 | max_prb:   3 | α: 0.48 | mem: 67108864 B
+
+============================================================
+ All experiments finished in 44.68s. Raw data written to results/raw_experiments.csv
+ Total CSV rows written: 3920
+============================================================
+   Compiling hash_table_study v0.1.0 (/home/aditta/Downloads/hash table)
+    Finished `release` profile [optimized] target(s) in 0.22s
+     Running `target/release/stats_analysis`
+============================================================
+ Hash Table Statistical Analysis Runner
+============================================================
+Read 560 distinct benchmark groups from results/raw_experiments.csv
+Successfully computed summary statistics!
+Written 560 summary rows to results/summary_stats.csv
+============================================================
+    Finished `bench` profile [optimized] target(s) in 0.02s
+     Running unittests src/lib.rs (target/release/build/hash_table_study/f745f52a4832bd93/out/hash_table_study-f745f52a4832bd93)
+
+running 9 tests
+test hasher::tests::test_hash_deterministic ... ignored
+test hasher::tests::test_hash_in_range ... ignored
+test hasher::tests::test_hash_zero_capacity ... ignored
+test hasher::tests::test_next_power_of_two ... ignored
+test hasher::tests::test_next_prime ... ignored
+test linear_probing::tests::smoke_test ... ignored
+test quadratic_probing::tests::smoke_test ... ignored
+test robin_hood::tests::smoke_test ... ignored
+test separate_chaining::tests::smoke_test ... ignored
+
+test result: ok. 0 passed; 0 failed; 9 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/experiment.rs (target/release/build/hash_table_study/b6c8a876cbf8aea9/out/experiment-b6c8a876cbf8aea9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/release/build/hash_table_study/4d60c69d3b605d83/out/hash_table_study-4d60c69d3b605d83)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/stats_analysis.rs (target/release/build/hash_table_study/79cc8254ad8aa873/out/stats_analysis-79cc8254ad8aa873)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/benchmarks.rs (target/release/build/hash_table_study/f345d4b89c907877/out/benchmarks-f345d4b89c907877)
+Gnuplot not found, using plotters backend
+Benchmarking insert_sc/1000
+Benchmarking insert_sc/1000: Warming up for 3.0000 s
+Benchmarking insert_sc/1000: Collecting 100 samples in estimated 5.1625 s (126k iterations)
+Benchmarking insert_sc/1000: Analyzing
+insert_sc/1000          time:   [40.783 µs 40.894 µs 40.998 µs]
+Benchmarking insert_sc/10000
+Benchmarking insert_sc/10000: Warming up for 3.0000 s
+Benchmarking insert_sc/10000: Collecting 100 samples in estimated 5.9347 s (15k iterations)
+Benchmarking insert_sc/10000: Analyzing
+insert_sc/10000         time:   [385.98 µs 386.82 µs 387.68 µs]
+Benchmarking insert_sc/100000
+Benchmarking insert_sc/100000: Warming up for 3.0000 s
+Benchmarking insert_sc/100000: Collecting 100 samples in estimated 5.2509 s (600 iterations)
+Benchmarking insert_sc/100000: Analyzing
+insert_sc/100000        time:   [8.5057 ms 8.5401 ms 8.5743 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+Benchmarking insert_sc/500000
+Benchmarking insert_sc/500000: Warming up for 3.0000 s
+
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 7.0s, or reduce sample count to 70.
+Benchmarking insert_sc/500000: Collecting 100 samples in estimated 7.0199 s (100 iterations)
+Benchmarking insert_sc/500000: Analyzing
+insert_sc/500000        time:   [71.445 ms 71.848 ms 72.247 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) low mild
+  2 (2.00%) high mild
+
+Benchmarking lookup_hit_sc/1000
+Benchmarking lookup_hit_sc/1000: Warming up for 3.0000 s
+Benchmarking lookup_hit_sc/1000: Collecting 100 samples in estimated 5.0077 s (1.1M iterations)
+Benchmarking lookup_hit_sc/1000: Analyzing
+lookup_hit_sc/1000      time:   [4.3877 µs 4.3981 µs 4.4073 µs]
+Benchmarking lookup_hit_sc/10000
+Benchmarking lookup_hit_sc/10000: Warming up for 3.0000 s
+Benchmarking lookup_hit_sc/10000: Collecting 100 samples in estimated 5.2679 s (76k iterations)
+Benchmarking lookup_hit_sc/10000: Analyzing
+lookup_hit_sc/10000     time:   [68.695 µs 68.841 µs 68.995 µs]
+Benchmarking lookup_hit_sc/100000
+Benchmarking lookup_hit_sc/100000: Warming up for 3.0000 s
+
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.9s, enable flat sampling, or reduce sample count to 60.
+Benchmarking lookup_hit_sc/100000: Collecting 100 samples in estimated 6.8865 s (5050 iterations)
+Benchmarking lookup_hit_sc/100000: Analyzing
+lookup_hit_sc/100000    time:   [1.3400 ms 1.3627 ms 1.3935 ms]
+Found 9 outliers among 100 measurements (9.00%)
+  5 (5.00%) high mild
+  4 (4.00%) high severe
+Benchmarking lookup_hit_sc/500000
+Benchmarking lookup_hit_sc/500000: Warming up for 3.0000 s
+Benchmarking lookup_hit_sc/500000: Collecting 100 samples in estimated 5.4286 s (300 iterations)
+Benchmarking lookup_hit_sc/500000: Analyzing
+lookup_hit_sc/500000    time:   [17.658 ms 17.726 ms 17.800 ms]
+Found 8 outliers among 100 measurements (8.00%)
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+Benchmarking lookup_miss_sc/1000
+Benchmarking lookup_miss_sc/1000: Warming up for 3.0000 s
+Benchmarking lookup_miss_sc/1000: Collecting 100 samples in estimated 5.0019 s (1.3M iterations)
+Benchmarking lookup_miss_sc/1000: Analyzing
+lookup_miss_sc/1000     time:   [3.8742 µs 3.8821 µs 3.8896 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high severe
+Benchmarking lookup_miss_sc/10000
+Benchmarking lookup_miss_sc/10000: Warming up for 3.0000 s
+Benchmarking lookup_miss_sc/10000: Collecting 100 samples in estimated 5.2059 s (66k iterations)
+Benchmarking lookup_miss_sc/10000: Analyzing
+lookup_miss_sc/10000    time:   [78.561 µs 78.870 µs 79.224 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  2 (2.00%) low mild
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+Benchmarking lookup_miss_sc/100000
+Benchmarking lookup_miss_sc/100000: Warming up for 3.0000 s
+
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.0s, enable flat sampling, or reduce sample count to 60.
+Benchmarking lookup_miss_sc/100000: Collecting 100 samples in estimated 5.9810 s (5050 iterations)
+Benchmarking lookup_miss_sc/100000: Analyzing
+lookup_miss_sc/100000   time:   [1.1759 ms 1.1966 ms 1.2192 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+Benchmarking lookup_miss_sc/500000
+Benchmarking lookup_miss_sc/500000: Warming up for 3.0000 s
+Benchmarking lookup_miss_sc/500000: Collecting 100 samples in estimated 5.8936 s (400 iterations)
+Benchmarking lookup_miss_sc/500000: Analyzing
+lookup_miss_sc/500000   time:   [13.946 ms 14.041 ms 14.150 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+
+Benchmarking delete_sc/1000
+Benchmarking delete_sc/1000: Warming up for 3.0000 s
+Benchmarking delete_sc/1000: Collecting 100 samples in estimated 5.1893 s (96k iterations)
+Benchmarking delete_sc/1000: Analyzing
+delete_sc/1000          time:   [53.868 µs 54.037 µs 54.202 µs]
+Benchmarking delete_sc/10000
+Benchmarking delete_sc/10000: Warming up for 3.0000 s
+Benchmarking delete_sc/10000: Collecting 100 samples in estimated 6.8604 s (15k iterations)
+Benchmarking delete_sc/10000: Analyzing
+delete_sc/10000         time:   [449.54 µs 453.23 µs 459.63 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+Benchmarking delete_sc/100000
+Benchmarking delete_sc/100000: Warming up for 3.0000 s
+Benchmarking delete_sc/100000: Collecting 100 samples in estimated 5.0422 s (500 iterations)
+Benchmarking delete_sc/100000: Analyzing
+delete_sc/100000        time:   [9.9890 ms 10.037 ms 10.088 ms]
+Found 8 outliers among 100 measurements (8.00%)
+  7 (7.00%) high mild
+  1 (1.00%) high severe
+Benchmarking delete_sc/500000
+Benchmarking delete_sc/500000: Warming up for 3.0000 s
+
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.2s, or reduce sample count to 50.
+Benchmarking delete_sc/500000: Collecting 100 samples in estimated 9.1552 s (100 iterations)
+Benchmarking delete_sc/500000: Analyzing
+delete_sc/500000        time:   [91.147 ms 91.437 ms 91.763 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+Benchmarking insert_lp/1000
+Benchmarking insert_lp/1000: Warming up for 3.0000 s
+Benchmarking insert_lp/1000: Collecting 100 samples in estimated 5.0302 s (525k iterations)
+Benchmarking insert_lp/1000: Analyzing
+insert_lp/1000          time:   [9.5466 µs 9.5743 µs 9.6008 µs]
+Benchmarking insert_lp/10000
+Benchmarking insert_lp/10000: Warming up for 3.0000 s
+Benchmarking insert_lp/10000: Collecting 100 samples in estimated 5.7096 s (40k iterations)
+Benchmarking insert_lp/10000: Analyzing
+insert_lp/10000         time:   [139.96 µs 140.27 µs 140.58 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+Benchmarking insert_lp/100000
+Benchmarking insert_lp/100000: Warming up for 3.0000 s
+Benchmarking insert_lp/100000: Collecting 100 samples in estimated 5.1158 s (1700 iterations)
+Benchmarking insert_lp/100000: Analyzing
+insert_lp/100000        time:   [3.0364 ms 3.0526 ms 3.0727 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) high mild
+  3 (3.00%) high severe
+Benchmarking insert_lp/500000
+Benchmarking insert_lp/500000: Warming up for 3.0000 s
+Benchmarking insert_lp/500000: Collecting 100 samples in estimated 6.4465 s (300 iterations)
+Benchmarking insert_lp/500000: Analyzing
+insert_lp/500000        time:   [21.360 ms 21.499 ms 21.674 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+Benchmarking lookup_hit_lp/1000
+Benchmarking lookup_hit_lp/1000: Warming up for 3.0000 s
+Benchmarking lookup_hit_lp/1000: Collecting 100 samples in estimated 5.0060 s (843k iterations)
+Benchmarking lookup_hit_lp/1000: Analyzing
+lookup_hit_lp/1000      time:   [5.8518 µs 5.8703 µs 5.8875 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) low mild
+Benchmarking lookup_hit_lp/10000
+Benchmarking lookup_hit_lp/10000: Warming up for 3.0000 s
+Benchmarking lookup_hit_lp/10000: Collecting 100 samples in estimated 5.4346 s (40k iterations)

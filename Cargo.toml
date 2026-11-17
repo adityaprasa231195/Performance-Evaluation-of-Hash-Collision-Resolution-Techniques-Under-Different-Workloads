@@ -1,0 +1,23 @@
+[package]
+name = "hash_table_study"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "hash_table_study"
+path = "src/main.rs"
+
+[lib]
+name = "hash_table_study"
+path = "src/lib.rs"
+
+[dependencies]
+rand = "0.8"
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+rand = "0.8"
+
+[[bench]]
+name = "benchmarks"
+harness = false

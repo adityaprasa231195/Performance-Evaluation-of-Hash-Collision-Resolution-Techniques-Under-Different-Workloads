@@ -1,0 +1,15 @@
+rustc 1.100.0 (0ef1bc386 2026-11-09)
+CPU(s):                                  20
+On-line CPU(s) list:                     0-19
+Model name:                              12th Gen Intel(R) Core(TM) i7-12700F
+Model:                                   151
+Thread(s) per core:                      2
+CPU(s) scaling MHz:                      49%
+L1d cache:                               512 KiB (12 instances)
+L1i cache:                               512 KiB (12 instances)
+L2 cache:                                12 MiB (9 instances)
+L3 cache:                                25 MiB (1 instance)
+NUMA node0 CPU(s):                       0-19
+               total        used        free      shared  buff/cache   available
+Mem:            31Gi       8.3Gi        12Gi       176Mi       9.7Gi        22Gi
+Swap:           31Gi       1.7Mi        31Gi
