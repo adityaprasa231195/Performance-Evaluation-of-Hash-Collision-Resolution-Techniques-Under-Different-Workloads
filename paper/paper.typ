@@ -30,9 +30,21 @@
 
 #set par(
   justify: true,
-  leading: 0.54em,
+  leading: 0.62em,
   first-line-indent: 1.2em
 )
+
+#show figure: set block(breakable: true)
+#show figure.where(kind: table): set figure.caption(position: top)
+#show figure.caption: it => [
+  #v(0.3em)
+  #set text(size: 8.3pt, font: "Liberation Sans", fill: black)
+  #it
+  #v(0.3em)
+]
+
+#set table(inset: (x: 4.5pt, y: 3.0pt))
+#show table.cell: set text(size: 7.8pt)
 
 #show heading: it => block(breakable: false)[
   #set text(font: "Liberation Sans", weight: "bold", fill: black)
@@ -49,11 +61,6 @@
     text(size: 9.5pt)[#it.body]
     v(0.25em, weak: true)
   }
-]
-
-#show figure.caption: it => [
-  #set text(size: 8.3pt, font: "Liberation Sans", fill: black)
-  #it
 ]
 
 #show raw: set text(font: "Liberation Mono", size: 7.0pt, fill: black)
@@ -170,7 +177,9 @@ The empirical and mathematical study of hash tables spans over six decades, orig
 
 == A. Foundational Hash Table Design and Open Addressing
 
-The conceptual foundation of hash tables was established by Peterson @knuth1998, who introduced open addressing with linear searching. In 1963, Knuth authored the first rigorous mathematical treatment of linear probing in an unpublished Bell Laboratories memorandum @knuth1963, later expanded in his seminal volume *The Art of Computer Programming* @knuth1998. Knuth formulated the celebrated "parking problem" bijection, proving that under uniform hashing, the expected probe count for a successful search in linear probing scales as $C^+_alpha approx frac(1, 2) (1 + frac(1, 1 - alpha))$, while an unsuccessful search scales quadratically as $C^-_alpha approx frac(1, 2) (1 + frac(1, (1 - alpha)^2))$. This quadratic blow-up is directly caused by *primary clustering*—the propensity of occupied contiguous slots to coalesce into extended blocks that grow with probability proportional -> their length @sedgewick2011, @clrs2022.
+The conceptual foundation of hash tables was established by Peterson @knuth1998, who introduced open addressing with linear searching. In 1963, Knuth authored the first rigorous mathematical treatment of linear probing in an unpublished Bell Laboratories memorandum @knuth1963, later expanded in his seminal volume *The Art of Computer Programming* @knuth1998. Knuth formulated the celebrated "parking problem" bijection, proving that under uniform hashing, the expected probe counts for successful ($C^+_alpha$) and unsuccessful ($C^-_alpha$) searches scale as:
+$ C^+_alpha approx frac(1, 2) (1 + frac(1, 1 - alpha)), quad C^-_alpha approx frac(1, 2) (1 + frac(1, (1 - alpha)^2)) $
+This quadratic blow-up in unsuccessful search latency is directly caused by *primary clustering*—the propensity of occupied contiguous slots to coalesce into extended blocks that grow with probability proportional to their length @sedgewick2011, @clrs2022.
 
 To mitigate primary clustering, early researchers investigated non-linear probing sequences. Quadratic probing, analyzed comprehensively by Maurer and Knuth @knuth1998, eliminates primary clustering by making the step size a quadratic function of the probe count: $h(k, i) = (h(k) + c_1 i + c_2 i^2) mod M$. While successfully avoiding primary clustering, quadratic probing introduces *secondary clustering*, wherein keys with identical primary hash values trace identical probe sequences. Furthermore, unless the table size $M$ is constrained to a prime number or a power of two with specific coefficient constraints, quadratic probing cannot guarantee that all table slots are visited, requiring table load factors to be restricted -> $alpha <= 0.50$ @clrs2022.
 
@@ -302,16 +311,19 @@ compared -> $O(log N)$ for standard linear probing.
 == F. Comparative Theoretical Summary
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (1.5fr, 1.1fr, 1.1fr, 1.0fr, 1.2fr, 1.3fr),
+    columns: (1.5fr, 1.3fr, 1.4fr, 1.1fr, 1.1fr, 1.2fr),
     stroke: none,
+    inset: (x: 5pt, y: 4pt),
     align: (left, center, center, center, center, left),
     table.hline(stroke: 1pt),
     [#strong[Technique]], [#strong[$C^+_alpha$]], [#strong[$C^-_alpha$]], [#strong[Max PSL]], [#strong[Clustering]], [#strong[Deletion Cost]],
     table.hline(stroke: 0.5pt),
     [Separate Chaining], [$1 + alpha/2$], [$e^(-alpha) + alpha$], [$O(log N / log log N)$], [None], [Node removal $O(1)$],
-    [Linear Probing], [$frac(1, 2)(1 + frac(1, 1-alpha))$], [$frac(1, 2)(1 + frac(1, (1-alpha)^2))$], [$O(log N)$], [Primary & Sec.], [Tombstone mark $O(1)$],
-    [Quadratic Probing], [$1 - ln(1-alpha) - frac(alpha, 2)$], [$frac(1, 1-alpha) - alpha - ln(1-alpha)$], [$O(log N)$], [Secondary only], [Tombstone mark $O(1)$],
+    [Linear Probing], [$1/2(1 + 1/(1-alpha))$], [$1/2(1 + 1/(1-alpha)^2)$], [$O(log N)$], [Primary & Sec.], [Tombstone mark $O(1)$],
+    [Quadratic Probing], [$1 - ln(1-alpha) - alpha/2$], [$1/(1-alpha) - alpha - ln(1-alpha)$], [$O(log N)$], [Secondary only], [Tombstone mark $O(1)$],
     [Robin Hood Hashing], [$approx 1 + alpha/2$], [$approx 1 + alpha/2$], [$O(log log N)$], [Primary (mitigated)], [Backward shift $O("PSL")$],
     table.hline(stroke: 1pt),
   ),
@@ -469,9 +481,12 @@ At the maximum evaluated scale of $N = 10^6$ (where table working sets exceed th
 *Deletion Mechanics:* Figure 4 illustrates deletion latency. At $N = 10^5$, Linear Probing records 13.78 ns, Quadratic Probing records 15.56 ns, Separate Chaining records 15.21 ns, and Robin Hood records 18.57 ns. Although Robin Hood's backward-shift compaction requires shifting elements in memory, the bounded nature of its probe sequence keeps this overhead remarkably low (only ~3-5 ns slower than tombstone marking) while entirely preventing table tombstone saturation.
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (0.9fr, 1.4fr, 1.5fr, 1.4fr, 1.4fr, 1.4fr),
+    columns: (1.0fr, 1.5fr, 1.5fr, 1.4fr, 1.4fr, 1.4fr),
     stroke: none,
+    inset: (x: 5pt, y: 3.5pt),
     align: (center, left, right, right, right, right),
     table.hline(stroke: 1pt),
     [#strong[Scale ($N$)]], [#strong[Algorithm]], [#strong[Insert (ns)]], [#strong[Hit (ns)]], [#strong[Miss (ns)]], [#strong[Delete (ns)]],
@@ -532,9 +547,12 @@ Figure 8 and Table 2 present the empirical probe sequence length (PSL) metrics, 
 ) <fig_probe_counts>
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (0.9fr, 1.4fr, 1.1fr, 1.0fr, 1.2fr, 1.0fr),
+    columns: (1.0fr, 1.5fr, 1.2fr, 1.1fr, 1.3fr, 1.1fr),
     stroke: none,
+    inset: (x: 5pt, y: 3.5pt),
     align: (center, left, right, right, right, right),
     table.hline(stroke: 1pt),
     [#strong[Scale ($N$)]], [#strong[Algorithm]], [#strong[Avg Probe]], [#strong[Max Probe]], [#strong[Collisions]], [#strong[Load ($alpha$)]],
@@ -600,9 +618,12 @@ Figures 7, 9, and 10 and Table 3 detail the performance sensitivity of each tech
 + *Duplicate-Heavy and Small-Range:* In duplicate-heavy workloads (only 10 distinct keys across 100,000 operations), all four implementations detect preexisting keys immediately, performing update-in-place operations without allocating new slots or triggering resizes. Hit latencies drop -> 3.71 ns for Separate Chaining, 4.88 ns for Linear Probing, and 5.04 ns for Robin Hood.
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (1.5fr, 1.4fr, 1.0fr, 1.0fr, 1.0fr, 0.9fr, 1.2fr),
+    columns: (1.6fr, 1.4fr, 1.1fr, 1.1fr, 1.0fr, 0.9fr, 1.2fr),
     stroke: none,
+    inset: (x: 5pt, y: 3.5pt),
     align: (left, left, right, right, right, right, right),
     table.hline(stroke: 1pt),
     [#strong[Distribution]], [#strong[Algorithm]], [#strong[Hit (ns)]], [#strong[Ins (ns)]], [#strong[Avg Prb]], [#strong[Max]], [#strong[Collisions]],
@@ -761,9 +782,12 @@ Engineers selecting a collision resolution strategy must evaluate four primary w
 Table 6 establishes an evidence-based selection taxonomy mapping concrete engineering constraints -> optimal algorithmic choices.
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (1.2fr, 1.0fr, 1.1fr, 1.4fr, 2.3fr),
+    columns: (1.3fr, 1.0fr, 1.0fr, 1.4fr, 2.8fr),
     stroke: none,
+    inset: (x: 5pt, y: 3.5pt),
     align: (left, left, left, left, left),
     table.hline(stroke: 1pt),
     [#strong[Workload Profile]], [#strong[R/W Ratio]], [#strong[Churn]], [#strong[Recommended]], [#strong[Engineering Justification]],
@@ -1089,13 +1113,17 @@ The complete test suite executes 70 tests across unit and integration targets:
 Table 7 provides the complete reference dataset across all five scales on uniform random data, recording median, IQR, mean, minimum, and maximum latencies across all 3,920 measured trials.
 
 #figure(
-  table(
-    columns: (0.9fr, 1.2fr, 0.8fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr),
-    stroke: none,
-    align: (center, left, center, right, right, right, right, right),
-    table.hline(stroke: 1pt),
-    [#strong[Scale ($N$)]], [#strong[Algorithm]], [#strong[Op]], [#strong[Median]], [#strong[IQR]], [#strong[Mean]], [#strong[Min]], [#strong[Max]],
-    table.hline(stroke: 0.5pt),
+  text(size: 7.2pt)[
+    #table(
+      columns: (1.0fr, 1.4fr, 0.9fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr),
+      stroke: none,
+      inset: (x: 3.5pt, y: 1.8pt),
+      align: (center, left, center, right, right, right, right, right),
+      table.header(
+        table.hline(stroke: 1pt),
+        [#strong[Scale ($N$)]], [#strong[Algorithm]], [#strong[Op]], [#strong[Median]], [#strong[IQR]], [#strong[Mean]], [#strong[Min]], [#strong[Max]],
+        table.hline(stroke: 0.5pt),
+      ),
     [$10^3$], [Sep. Chain], [Ins], [72.57], [2.79], [73.89], [59.63], [90.90],
     [$10^3$], [Sep. Chain], [Hit], [15.23], [1.62], [14.51], [7.60], [16.64],
     [$10^3$], [Sep. Chain], [Miss], [18.55], [4.18], [18.77], [13.02], [23.36],
@@ -1182,7 +1210,8 @@ Table 7 provides the complete reference dataset across all five scales on unifor
     [$10^6$], [Robin Hood], [Del], [39.82], [0.63], [39.83], [39.47], [40.16],
     table.hline(stroke: 0.3pt + luma(180)),
 
-    table.hline(stroke: 1pt),
-  ),
+      table.hline(stroke: 1pt),
+    )
+  ],
   caption: [Complete raw experimental latency reference table (nanoseconds per operation) for uniform random keys across five orders of input magnitude.],
 ) <tbl_raw_reference>

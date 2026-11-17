@@ -309,16 +309,21 @@ The complete test suite executes 70 tests across unit and integration targets:
 Table 7 provides the complete reference dataset across all five scales on uniform random data, recording median, IQR, mean, minimum, and maximum latencies across all 3,920 measured trials.
 
 #figure(
-  table(
-    columns: (0.9fr, 1.2fr, 0.8fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr),
-    stroke: none,
-    align: (center, left, center, right, right, right, right, right),
-    table.hline(stroke: 1pt),
-    [#strong[Scale ($N$)]], [#strong[Algorithm]], [#strong[Op]], [#strong[Median]], [#strong[IQR]], [#strong[Mean]], [#strong[Min]], [#strong[Max]],
-    table.hline(stroke: 0.5pt),
+  text(size: 7.2pt)[
+    #table(
+      columns: (1.0fr, 1.4fr, 0.9fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr),
+      stroke: none,
+      inset: (x: 3.5pt, y: 1.8pt),
+      align: (center, left, center, right, right, right, right, right),
+      table.header(
+        table.hline(stroke: 1pt),
+        [#strong[Scale ($N$)]], [#strong[Algorithm]], [#strong[Op]], [#strong[Median]], [#strong[IQR]], [#strong[Mean]], [#strong[Min]], [#strong[Max]],
+        table.hline(stroke: 0.5pt),
+      ),
 __D_ROWS__
-    table.hline(stroke: 1pt),
-  ),
+      table.hline(stroke: 1pt),
+    )
+  ],
   caption: [Complete raw experimental latency reference table (nanoseconds per operation) for uniform random keys across five orders of input magnitude.],
 ) <tbl_raw_reference>
 """

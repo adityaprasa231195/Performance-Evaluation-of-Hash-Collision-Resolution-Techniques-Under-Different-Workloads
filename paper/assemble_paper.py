@@ -52,9 +52,21 @@ header = """#set page(
 
 #set par(
   justify: true,
-  leading: 0.54em,
+  leading: 0.62em,
   first-line-indent: 1.2em
 )
+
+#show figure: set block(breakable: true)
+#show figure.where(kind: table): set figure.caption(position: top)
+#show figure.caption: it => [
+  #v(0.3em)
+  #set text(size: 8.3pt, font: "Liberation Sans", fill: black)
+  #it
+  #v(0.3em)
+]
+
+#set table(inset: (x: 4.5pt, y: 3.0pt))
+#show table.cell: set text(size: 7.8pt)
 
 #show heading: it => block(breakable: false)[
   #set text(font: "Liberation Sans", weight: "bold", fill: black)
@@ -71,11 +83,6 @@ header = """#set page(
     text(size: 9.5pt)[#it.body]
     v(0.25em, weak: true)
   }
-]
-
-#show figure.caption: it => [
-  #set text(size: 8.3pt, font: "Liberation Sans", fill: black)
-  #it
 ]
 
 #show raw: set text(font: "Liberation Mono", size: 7.0pt, fill: black)

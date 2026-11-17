@@ -27,9 +27,12 @@ Engineers selecting a collision resolution strategy must evaluate four primary w
 Table 6 establishes an evidence-based selection taxonomy mapping concrete engineering constraints -> optimal algorithmic choices.
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (1.2fr, 1.0fr, 1.1fr, 1.4fr, 2.3fr),
+    columns: (1.3fr, 1.0fr, 1.0fr, 1.4fr, 2.8fr),
     stroke: none,
+    inset: (x: 5pt, y: 3.5pt),
     align: (left, left, left, left, left),
     table.hline(stroke: 1pt),
     [#strong[Workload Profile]], [#strong[R/W Ratio]], [#strong[Churn]], [#strong[Recommended]], [#strong[Engineering Justification]],

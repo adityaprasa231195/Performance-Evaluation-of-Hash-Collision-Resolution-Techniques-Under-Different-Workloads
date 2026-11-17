@@ -86,27 +86,26 @@ def draw_arrow(ax, x0, y0, x1, y1, color=None, lw=1.2, style="->"):
 
 
 def box(ax, x, y, w, h, label, facecolor="white", edgecolor=None,
-        fontsize=7, bold=False, zorder=3, labelcolor=None):
+        fontsize=7, bold=False, zorder=3, labelcolor=None, pad=0.01):
     edgecolor = edgecolor or C["gray"]
     labelcolor = labelcolor or C["text"]
     r = FancyBboxPatch((x - w/2, y - h/2), w, h,
-                        boxstyle="round,pad=0.02",
+                        boxstyle=f"round,pad={pad}",
                         facecolor=facecolor, edgecolor=edgecolor,
                         linewidth=1.0, zorder=zorder)
     ax.add_patch(r)
     weight = "bold" if bold else "normal"
     ax.text(x, y, label, ha="center", va="center",
-            fontsize=fontsize, color=labelcolor, weight=weight, zorder=zorder+1,
-            wrap=True)
+            fontsize=fontsize, color=labelcolor, weight=weight, zorder=zorder+1)
 
 
-def new_diagram_fig(w_in=3.5, h_in=2.4, title=None):
+def new_diagram_fig(w_in=3.5, h_in=2.5, title=None):
     fig, ax = plt.subplots(figsize=(w_in, h_in))
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
     if title:
-        ax.set_title(title, fontsize=9, pad=4)
+        ax.set_title(title, fontsize=8.5, weight="bold", pad=6)
     return fig, ax
 
 
@@ -116,52 +115,55 @@ def fig_diagram_hash_structure():
 
     # Keys on left
     keys = ['"apple"', '"banana"', '"cherry"']
-    key_y = [0.78, 0.60, 0.42]
+    key_y = [0.75, 0.52, 0.30]
     for k, y in zip(keys, key_y):
-        box(ax, 0.13, y, 0.20, 0.10, k, facecolor="#eef4ff",
+        box(ax, 0.13, y, 0.18, 0.10, k, facecolor="#eef4ff",
             edgecolor=C["blue"], fontsize=6)
 
-    # Hash function box (center-left)
-    box(ax, 0.42, 0.60, 0.20, 0.30, "hash(k)\nmod N",
+    ax.text(0.13, 0.88, "Input Keys", ha="center", fontsize=6.5, weight="bold", color=C["text"])
+
+    # Hash function box (center)
+    box(ax, 0.40, 0.52, 0.18, 0.30, "hash(k)\nmod M",
         facecolor=C["blue"], edgecolor=C["blue"],
         labelcolor="white", fontsize=7, bold=True)
 
     # Arrow keys → hash
     for y in key_y:
-        draw_arrow(ax, 0.24, y, 0.32, 0.60)
+        draw_arrow(ax, 0.22, y, 0.31, 0.52)
 
     # Bucket array (right)
-    bucket_x = 0.72
-    bucket_w = 0.18
-    bucket_h = 0.095
+    bucket_x = 0.67
+    bucket_w = 0.14
+    bucket_h = 0.09
     indices = list(range(5))
-    bucket_top = 0.85
+    bucket_top = 0.82
+    step_y = 0.125
     for i in indices:
-        by = bucket_top - i * (bucket_h + 0.025)
+        by = bucket_top - i * step_y
         fc = "#fff3cd" if i in (1, 3) else "white"
-        ec = C["orange"] if i in (1, 3) else C["gray"]
+        ec = C["orange"] if i == 1 else (C["blue"] if i == 3 else C["gray"])
         box(ax, bucket_x, by, bucket_w, bucket_h, f"[{i}]",
-            facecolor=fc, edgecolor=ec, fontsize=6)
+            facecolor=fc, edgecolor=ec, fontsize=6.5)
 
-    # Arrows hash → buckets
-    draw_arrow(ax, 0.52, 0.72, bucket_x - bucket_w/2, 0.85 - 0.0*(bucket_h+0.025))
-    draw_arrow(ax, 0.52, 0.60, bucket_x - bucket_w/2, 0.85 - 1*(bucket_h+0.025))
-    draw_arrow(ax, 0.52, 0.48, bucket_x - bucket_w/2, 0.85 - 3*(bucket_h+0.025))
+    # Arrow hash → bucket [0] for apple
+    draw_arrow(ax, 0.49, 0.62, bucket_x - bucket_w/2, bucket_top - 0*step_y)
+    # Arrow hash → bucket [1] for banana
+    draw_arrow(ax, 0.49, 0.52, bucket_x - bucket_w/2, bucket_top - 1*step_y)
+    # Arrow hash → bucket [1] for cherry (Collision!)
+    draw_arrow(ax, 0.49, 0.42, bucket_x - bucket_w/2, bucket_top - 1*step_y)
 
-    # Collision note
-    ax.text(0.72, 0.85 - 1.5*(bucket_h+0.025), "← collision",
-            ha="left", va="center", fontsize=6, color=C["orange"],
-            style="italic")
+    # Clear collision label placed safely to the right
+    ax.annotate("Collision!\n(two keys → [1])",
+                xy=(bucket_x + bucket_w/2 + 0.01, bucket_top - 1*step_y),
+                xytext=(0.88, 0.76),
+                arrowprops=dict(arrowstyle="->", color=C["orange"], lw=0.9),
+                fontsize=5.5, color=C["orange"], ha="center", weight="bold")
 
-    # Linked list hint from bucket[1]
-    lx = bucket_x + bucket_w/2
-    ly = 0.85 - 1*(bucket_h+0.025)
-    ax.text(lx + 0.02, ly, "→ [k₁|v₁] → [k₂|v₂]",
-            ha="left", va="center", fontsize=5.5, color=C["green"])
+    # Linked entries representation
+    ax.text(0.88, bucket_top - 1*step_y - 0.04, "[banana]\n↓\n[cherry]",
+            ha="center", va="top", fontsize=5.0, color=C["green"])
 
-    # Labels
-    ax.text(0.13, 0.90, "Keys", ha="center", fontsize=7, weight="bold")
-    ax.text(0.72, 0.09, "Bucket Array (N slots)", ha="center", fontsize=6.5, color=C["gray"])
+    ax.text(bucket_x, 0.10, "Bucket Array (M slots)", ha="center", fontsize=6, color=C["gray"])
 
     savefig(fig, "fig_diagram_hash_structure")
 
@@ -171,13 +173,13 @@ def fig_diagram_separate_chaining():
     fig, ax = new_diagram_fig(3.5, 2.6, "Separate Chaining: Insert & Lookup")
 
     n_buckets = 5
-    bx, bw, bh = 0.18, 0.16, 0.10
-    top_y = 0.84
-    gap = 0.145
+    bx, bw, bh = 0.16, 0.14, 0.09
+    top_y = 0.78
+    gap = 0.13
 
     chains = {
         0: [("k=0","v=0")],
-        1: [("k=5","v=A"), ("k=10","v=B")],  # collision at bucket 1
+        1: [("k=5","v=A"), ("k=10","v=B")],  # collision
         2: [],
         3: [("k=8","v=C")],
         4: [],
@@ -185,36 +187,35 @@ def fig_diagram_separate_chaining():
 
     for i in range(n_buckets):
         by = top_y - i * gap
-        fc = "#eef4ff" if chains[i] else "#f5f5f5"
+        fc = "#eef4ff" if chains[i] else "#f9f9f9"
         box(ax, bx, by, bw, bh, f"[{i}]",
             facecolor=fc, edgecolor=C["blue"], fontsize=6.5)
 
         prev_x = bx + bw/2
         for j, (k, v) in enumerate(chains[i]):
-            nx = prev_x + 0.17
+            nx = prev_x + 0.16
             ny = by
             fc2 = "#fff3cd" if i == 1 else "#efffef"
-            box(ax, nx, ny, 0.16, bh, f"{k}\n{v}",
+            box(ax, nx, ny, 0.14, bh, f"{k}\n{v}",
                 facecolor=fc2, edgecolor=C["orange"] if i==1 else C["green"],
                 fontsize=5.5)
-            draw_arrow(ax, prev_x, ny, nx - 0.08, ny)
-            prev_x = nx + 0.08
+            draw_arrow(ax, prev_x, ny, nx - 0.07, ny)
+            prev_x = nx + 0.07
 
-        # NULL at end
-        nx = prev_x + 0.10
+        # NULL marker
         if chains[i]:
-            ax.text(nx, top_y - i*gap, "NULL", ha="center", va="center",
-                    fontsize=5.5, color=C["gray"])
+            ax.text(prev_x + 0.07, by, "NULL", ha="center", va="center",
+                    fontsize=5.0, color=C["gray"])
 
-    # Lookup path annotation
-    ax.annotate("lookup(k=10):\nbucket 1 → scan chain",
-                xy=(0.26, top_y - 1*gap + 0.01),
-                xytext=(0.03, top_y - 1*gap + 0.14),
-                arrowprops=dict(arrowstyle="->", color=C["red"], lw=0.9),
-                fontsize=5.5, color=C["red"])
+    # Lookup annotation placed cleanly in upper empty space (x=0.65, y=0.88) with arrow to bucket 1
+    ax.annotate("Lookup (k=10):\nHash to [1] → traverse chain",
+                xy=(bx + bw/2, top_y - 1*gap),
+                xytext=(0.65, 0.88),
+                arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=-0.2", color=C["red"], lw=0.9),
+                fontsize=5.5, color=C["red"], ha="center", weight="bold")
 
-    ax.text(0.18, 0.08, "O(1) avg insert · O(1+α) avg lookup · α = load factor",
-            ha="center", fontsize=6, color=C["gray"])
+    ax.text(0.50, 0.06, "O(1) average lookup · Worst case O(chain length)",
+            ha="center", fontsize=5.5, color=C["gray"])
 
     savefig(fig, "fig_diagram_separate_chaining")
 
@@ -224,46 +225,48 @@ def fig_diagram_linear_probing():
     fig, ax = new_diagram_fig(3.5, 2.5, "Linear Probing: Collision & Tombstone")
 
     n = 8
-    slot_w = 1.0 / (n + 1)
+    slot_w = 0.88 / n
     slot_h = 0.18
-    slot_y = 0.60
+    slot_y = 0.44
 
-    contents = ["—", "k=1\nv=A", "k=9\nv=B", "[del]", "k=4\nv=C", "—", "—", "—"]
-    colors   = ["#f5f5f5", "#eef4ff", "#fff3cd", "#ffdddd", "#efffef", "#f5f5f5","#f5f5f5","#f5f5f5"]
+    contents = ["—", "k=1\nv=A", "k=9\nv=B", "[DEL]", "k=4\nv=C", "—", "—", "—"]
+    colors   = ["#f9f9f9", "#eef4ff", "#fff3cd", "#ffe0e0", "#efffef", "#f9f9f9","#f9f9f9","#f9f9f9"]
     edges    = [C["gray"], C["blue"], C["orange"], C["red"], C["green"],C["gray"],C["gray"],C["gray"]]
 
-    xs = [(i + 1) * slot_w for i in range(n)]
+    xs = [0.08 + (i + 0.5) * slot_w for i in range(n)]
     for i, (x, label, fc, ec) in enumerate(zip(xs, contents, colors, edges)):
-        r = plt.Rectangle((x - slot_w*0.45, slot_y - slot_h/2), slot_w*0.9, slot_h,
+        r = FancyBboxPatch((x - slot_w*0.44, slot_y - slot_h/2), slot_w*0.88, slot_h,
+                           boxstyle="round,pad=0.005",
                            facecolor=fc, edgecolor=ec, linewidth=1.0, zorder=3)
         ax.add_patch(r)
-        ax.text(x, slot_y, label, ha="center", va="center", fontsize=5.5, zorder=4)
-        ax.text(x, slot_y - slot_h/2 - 0.06, str(i), ha="center", fontsize=6,
+        ax.text(x, slot_y, label, ha="center", va="center", fontsize=5.5,
+                color=ec if label=="[DEL]" else C["text"],
+                weight="bold" if label=="[DEL]" else "normal", zorder=4)
+        ax.text(x, slot_y - slot_h/2 - 0.06, f"[{i}]", ha="center", fontsize=5.5,
                 color=C["gray"])
 
-    # Probe sequence for new key hash(k)=1 (slot 1 occupied)
-    probe_y = slot_y + slot_h/2 + 0.12
-    for step, idx in enumerate([1, 2, 3]):
+    # Probe sequence for key with h(k)=1
+    probe_labels = ["Try 0: h(k)=1\n(occupied)", "Try 1: h+1\n(occupied)"]
+    for step, idx in enumerate([1, 2]):
         px = xs[idx]
-        ax.annotate("", xy=(px, slot_y + slot_h/2),
-                    xytext=(px, probe_y),
-                    arrowprops=dict(arrowstyle="->",
-                                   color=C["red"] if idx<3 else C["green"], lw=1.0))
-        label = f"h+{step}" if step > 0 else "h(k)"
-        ax.text(px, probe_y + 0.06, label, ha="center", fontsize=5.5, color=C["red"])
+        ax.annotate("", xy=(px, slot_y + slot_h/2 + 0.01),
+                    xytext=(px, 0.72),
+                    arrowprops=dict(arrowstyle="->", color=C["red"], lw=0.9))
+        ax.text(px, 0.75, probe_labels[step], ha="center", va="bottom", fontsize=4.8, color=C["red"])
 
-    ax.text(xs[3], probe_y + 0.06, "insert\nhere", ha="center", fontsize=5,
-            color=C["green"])
+    # Insertion target at Tombstone (slot 3)
+    ax.annotate("", xy=(xs[3], slot_y + slot_h/2 + 0.01),
+                xytext=(xs[3], 0.72),
+                arrowprops=dict(arrowstyle="->", color=C["green"], lw=1.1))
+    ax.text(xs[3], 0.75, "Try 2: h+2\nReuse [DEL]", ha="center", va="bottom", fontsize=4.8,
+            color=C["green"], weight="bold")
 
-    # Tombstone note
-    ax.annotate("tombstone\n(deleted)", xy=(xs[3], slot_y),
-                xytext=(xs[3] - 0.08, slot_y - 0.25),
-                arrowprops=dict(arrowstyle="->", color=C["red"], lw=0.8),
-                fontsize=5.5, color=C["red"], ha="center")
+    # Tombstone explanation below
+    ax.text(xs[3], 0.18, "Tombstone (lazy deletion)", ha="center", fontsize=5.0, color=C["red"], style="italic")
+    draw_arrow(ax, xs[3], 0.22, xs[3], slot_y - slot_h/2 - 0.08, color=C["red"])
 
-    ax.text(0.5, 0.05, "Probe: h(k), h(k)+1, h(k)+2, … (mod N)   Primary clustering risk",
+    ax.text(0.50, 0.05, "Linear Probe: h, h+1, h+2, ... (mod M) · Subject to primary clustering",
             ha="center", fontsize=5.5, color=C["gray"])
-    ax.text(0.5, 0.92, "Slot index →", ha="center", fontsize=6, color=C["gray"])
 
     savefig(fig, "fig_diagram_linear_probing")
 
@@ -273,55 +276,47 @@ def fig_diagram_quadratic_probing():
     fig, ax = new_diagram_fig(3.5, 2.5, "Quadratic Probing: h(k) + i²")
 
     n = 9
-    slot_w = 1.0 / (n + 1)
-    slot_h = 0.18
-    slot_y = 0.58
+    slot_w = 0.88 / n
+    slot_h = 0.16
+    slot_y = 0.40
 
     base = 2  # h(k) = 2
-    probes = [base, (base+1)%n, (base+4)%n, (base+9)%n]  # h+0,h+1²,h+2²,h+3²
     contents = ["—"] * n
-    for i, p in enumerate(probes[1:], 1):
-        contents[p] = f"try {i}"
-    contents[base] = "occupied"
+    contents[base] = "Occ."
+    contents[(base+1)%n] = "Try 1"
+    contents[(base+4)%n] = "Try 2"
 
-    colors = []
-    for i in range(n):
-        if i == base: colors.append("#fff3cd")
-        elif i in probes[1:]: colors.append("#eef4ff")
-        else: colors.append("#f5f5f5")
+    colors = ["#f9f9f9"] * n
+    colors[base] = "#fff3cd"
+    colors[(base+1)%n] = "#efffef"
+    colors[(base+4)%n] = "#eef4ff"
 
-    xs = [(i + 1) * slot_w for i in range(n)]
+    xs = [0.06 + (i + 0.5) * slot_w for i in range(n)]
     for i, (x, label, fc) in enumerate(zip(xs, contents, colors)):
-        r = plt.Rectangle((x - slot_w*0.45, slot_y - slot_h/2), slot_w*0.9, slot_h,
-                           facecolor=fc,
-                           edgecolor=C["orange"] if label=="occupied" else C["gray"],
-                           linewidth=1.0, zorder=3)
+        ec = C["orange"] if label=="Occ." else (C["green"] if label=="Try 1" else C["gray"])
+        r = FancyBboxPatch((x - slot_w*0.44, slot_y - slot_h/2), slot_w*0.88, slot_h,
+                           boxstyle="round,pad=0.005",
+                           facecolor=fc, edgecolor=ec, linewidth=1.0, zorder=3)
         ax.add_patch(r)
-        ax.text(x, slot_y, label, ha="center", va="center", fontsize=5.0, zorder=4)
-        ax.text(x, slot_y - slot_h/2 - 0.06, str(i), ha="center", fontsize=6, color=C["gray"])
+        ax.text(x, slot_y, label, ha="center", va="center", fontsize=5.0,
+                weight="bold" if label != "—" else "normal", zorder=4)
+        ax.text(x, slot_y - slot_h/2 - 0.06, f"[{i}]", ha="center", fontsize=5.5, color=C["gray"])
 
-    # Probe arcs above
-    arc_base_y = slot_y + slot_h/2 + 0.04
-    offsets_labels = [(1, "h+1²"), (4, "h+2²"), (9, "h+3²")]
-    for off, lbl in offsets_labels:
-        dest = (base + off) % n
-        # draw curved arrow
-        x0 = xs[base]
-        x1 = xs[dest]
-        mid_x = (x0 + x1) / 2
-        arc_h = 0.12 + 0.02 * off
-        style = f"arc3,rad={-0.4 - 0.05*off}"
-        ax.annotate("", xy=(x1, slot_y + slot_h/2),
-                    xytext=(x0, slot_y + slot_h/2),
-                    arrowprops=dict(arrowstyle="->",
-                                   connectionstyle=style,
-                                   color=C["blue"], lw=0.9))
-        ax.text(mid_x, arc_base_y + arc_h, lbl, ha="center", fontsize=5.5,
-                color=C["blue"])
+    # Arc 1: base (2) -> base+1 (3), offset = 1²
+    x0 = xs[2]
+    x1 = xs[3]
+    ax.annotate("", xy=(x1, slot_y + slot_h/2), xytext=(x0, slot_y + slot_h/2),
+                arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=-0.4", color=C["blue"], lw=1.0))
+    ax.text((x0+x1)/2, 0.58, "+1²", ha="center", fontsize=5.5, color=C["blue"], weight="bold")
 
-    ax.text(xs[base], arc_base_y + 0.02, "h(k)", ha="center", fontsize=6,
-            color=C["orange"], weight="bold")
-    ax.text(0.5, 0.05, "Probe: h(k)+1, h(k)+4, h(k)+9, …   Reduces primary clustering",
+    # Arc 2: base (2) -> base+4 (6), offset = 2²
+    x2 = xs[6]
+    ax.annotate("", xy=(x2, slot_y + slot_h/2), xytext=(x0, slot_y + slot_h/2),
+                arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=-0.45", color=C["blue"], lw=1.0))
+    ax.text((x0+x2)/2, 0.72, "+2² = +4", ha="center", fontsize=5.5, color=C["blue"], weight="bold")
+
+    ax.text(xs[base], slot_y + slot_h/2 + 0.05, "h(k)", ha="center", fontsize=5.5, color=C["orange"], weight="bold")
+    ax.text(0.50, 0.06, "Probe: h+1, h+4, h+9, ... (mod M) · Eliminates primary clustering",
             ha="center", fontsize=5.5, color=C["gray"])
 
     savefig(fig, "fig_diagram_quadratic_probing")
@@ -332,46 +327,42 @@ def fig_diagram_robin_hood():
     fig, ax = new_diagram_fig(3.5, 2.6, "Robin Hood Hashing: Displacement & Stealing")
 
     n = 7
-    slot_w = 1.0 / (n + 1)
+    slot_w = 0.88 / n
     slot_h = 0.17
-    slot_y = 0.63
+    slot_y = 0.46
 
-    # (key_label, displacement)
     slots = [
-        ("—",    0,  "#f5f5f5", C["gray"]),
+        ("—",    0,  "#f9f9f9", C["gray"]),
         ("k=A",  0,  "#eef4ff", C["blue"]),
         ("k=B",  1,  "#efffef", C["green"]),
-        ("k=C",  2,  "#fff3cd", C["orange"]),  # displaced 2
-        ("—",    0,  "#f5f5f5", C["gray"]),
-        ("—",    0,  "#f5f5f5", C["gray"]),
-        ("—",    0,  "#f5f5f5", C["gray"]),
+        ("k=C",  2,  "#fff3cd", C["orange"]),
+        ("—",    0,  "#f9f9f9", C["gray"]),
+        ("—",    0,  "#f9f9f9", C["gray"]),
+        ("—",    0,  "#f9f9f9", C["gray"]),
     ]
-    xs = [(i + 1) * slot_w for i in range(n)]
+    xs = [0.06 + (i + 0.5) * slot_w for i in range(n)]
 
     for i, (x, (label, disp, fc, ec)) in enumerate(zip(xs, slots)):
-        r = plt.Rectangle((x - slot_w*0.45, slot_y - slot_h/2), slot_w*0.9, slot_h,
+        r = FancyBboxPatch((x - slot_w*0.44, slot_y - slot_h/2), slot_w*0.88, slot_h,
+                           boxstyle="round,pad=0.005",
                            facecolor=fc, edgecolor=ec, linewidth=1.0, zorder=3)
         ax.add_patch(r)
-        ax.text(x, slot_y + 0.015, label, ha="center", va="center", fontsize=6, zorder=4)
-        ax.text(x, slot_y - 0.030, f"d={disp}", ha="center", va="center",
-                fontsize=5.0, color=C["gray"], zorder=4)
-        ax.text(x, slot_y - slot_h/2 - 0.06, str(i), ha="center", fontsize=6,
-                color=C["gray"])
+        ax.text(x, slot_y + 0.02, label, ha="center", va="center", fontsize=5.5,
+                weight="bold" if label != "—" else "normal", zorder=4)
+        ax.text(x, slot_y - 0.03, f"d={disp}", ha="center", va="center",
+                fontsize=4.8, color=C["gray"], zorder=4)
+        ax.text(x, slot_y - slot_h/2 - 0.06, f"[{i}]", ha="center", fontsize=5.5, color=C["gray"])
 
-    # Incoming entry with d=3 trying to insert at slot 3
-    incoming_x = xs[3]
-    incoming_y = slot_y + slot_h/2 + 0.22
-    box(ax, incoming_x, incoming_y, 0.17, 0.11, "new: k=X\nd=3 → steal!",
-        facecolor="#ffe0e0", edgecolor=C["red"], fontsize=5.5)
-    draw_arrow(ax, incoming_x, incoming_y - 0.06, incoming_x, slot_y + slot_h/2 + 0.01)
+    # Incoming key box
+    box(ax, xs[3], 0.82, 0.16, 0.11, "New: k=X\n(dist = 3)",
+        facecolor="#ffe0e0", edgecolor=C["red"], fontsize=5.2, bold=True)
+    draw_arrow(ax, xs[3], 0.76, xs[3], slot_y + slot_h/2 + 0.02, color=C["red"], lw=1.0)
 
-    ax.annotate("d(X)=3 > d(C)=2\n→ evict C, insert X\nC probes forward",
-                xy=(xs[4], slot_y + slot_h/2),
-                xytext=(xs[5], slot_y + slot_h/2 + 0.18),
-                fontsize=5.0, color=C["red"], ha="center",
-                arrowprops=dict(arrowstyle="->", color=C["red"], lw=0.7))
+    # Annotation on steal decision
+    ax.text(0.72, 0.82, "dist(X)=3 > dist(C)=2\n→ Steal slot [3]!\nC pushed to [4] with d=3",
+            ha="left", va="center", fontsize=5.0, color=C["red"])
 
-    ax.text(0.5, 0.06, "Invariant: d(slot[i]) ≤ d(slot[i+1])   Equalises probe lengths",
+    ax.text(0.50, 0.06, "\"Rich give to poor\" · Equalises probe variance · Max PSL = O(log log N)",
             ha="center", fontsize=5.5, color=C["gray"])
 
     savefig(fig, "fig_diagram_robin_hood")
@@ -379,65 +370,65 @@ def fig_diagram_robin_hood():
 
 # ─── Diagram 6: Benchmark Workflow ───────────────────────────────────────────
 def fig_diagram_benchmark_workflow():
-    fig, ax = new_diagram_fig(3.5, 2.8, "Benchmark Workflow")
+    fig, ax = new_diagram_fig(3.5, 3.0, "Benchmark Execution Workflow")
 
     steps = [
-        ("Dataset\nCreation",    0.50, 0.87),
-        ("Table Init\n(capacity)", 0.50, 0.73),
-        ("Timed Ops\n(insert/lookup/delete)", 0.50, 0.57),
-        ("Collect Stats\n(ns, probes, memory)", 0.50, 0.41),
-        ("Write CSV\n(raw_experiments.csv)", 0.50, 0.25),
-        ("Analysis &\nPlots", 0.50, 0.11),
+        ("1. Dataset Synthesis (7 Distributions)", 0.50, 0.88),
+        ("2. Table Initialization & Pre-sizing", 0.50, 0.73),
+        ("3. Timed Operations (Insert / Hit / Miss / Del)", 0.50, 0.58),
+        ("4. Hardware Telemetry & Probe Sampling", 0.50, 0.43),
+        ("5. Multi-Trial CSV Logging (3,920 runs)", 0.50, 0.28),
+        ("6. Summary Statistics & Figure Generation", 0.50, 0.13),
     ]
     colors_box = [C["blue"], C["blue"], C["orange"], C["green"], C["green"], C["red"]]
 
     for i, ((label, x, y), fc) in enumerate(zip(steps, colors_box)):
-        box(ax, x, y, 0.42, 0.095, label, facecolor=fc,
-            edgecolor=fc, labelcolor="white", fontsize=6.5, bold=(i == 0))
+        box(ax, x, y, 0.72, 0.08, label, facecolor=fc,
+            edgecolor=fc, labelcolor="white", fontsize=6.0, bold=True, pad=0.005)
         if i < len(steps) - 1:
-            draw_arrow(ax, x, y - 0.048, steps[i+1][1], steps[i+1][2] + 0.048)
-
-    # Side annotations
-    ax.text(0.78, 0.57, "loop × sizes\n× load factors\n× distributions",
-            ha="left", va="center", fontsize=5.5, color=C["orange"])
-    ax.text(0.78, 0.25, "summary_stats.csv\naggregation",
-            ha="left", va="center", fontsize=5.5, color=C["green"])
+            draw_arrow(ax, x, y - 0.045, steps[i+1][1], steps[i+1][2] + 0.045, color=C["arrow"], lw=1.0)
 
     savefig(fig, "fig_diagram_benchmark_workflow")
 
 
 # ─── Diagram 7: Experiment Flowchart ─────────────────────────────────────────
 def fig_diagram_experiment_flowchart():
-    fig, ax = new_diagram_fig(3.5, 2.6, "Overall Research Workflow")
+    fig, ax = new_diagram_fig(3.5, 2.7, "Overall Research Flowchart")
 
-    nodes = [
-        ("Literature\nReview",   0.14, 0.50, C["blue"]),
-        ("Implementation\n(Rust)", 0.30, 0.50, C["blue"]),
-        ("Unit\nTests",          0.46, 0.76, C["green"]),
-        ("Benchmark\nSuite",     0.46, 0.50, C["orange"]),
-        ("Statistical\nAnalysis", 0.62, 0.50, C["orange"]),
-        ("Plots &\nDiagrams",    0.78, 0.76, C["red"]),
-        ("Paper\n(LaTeX)",       0.78, 0.50, C["red"]),
-        ("Submission",           0.78, 0.24, C["gray"]),
+    # 2-Row Architecture to prevent horizontal overlap
+    # Row 1: Implementation & Verification (y = 0.70)
+    row1 = [
+        ("Literature\nReview\n(24 Papers)",   0.20, 0.70, C["blue"]),
+        ("Safe Rust\nImpls\n(4 Algorithms)", 0.50, 0.70, C["blue"]),
+        ("Correctness\nSuite\n(70 Tests)",    0.80, 0.70, C["green"]),
+    ]
+    # Row 2: Empirical Evaluation & Paper (y = 0.28)
+    row2 = [
+        ("Paper Writing\n(IEEE 2-Col\n21 Pages)", 0.80, 0.28, C["red"]),
+        ("Statistical\nAnalysis\n(560 Groups)",   0.50, 0.28, C["orange"]),
+        ("Controlled\nBenchmark\n(3,920 Trials)", 0.20, 0.28, C["orange"]),
     ]
 
-    for label, x, y, fc in nodes:
-        box(ax, x, y, 0.14, 0.14, label, facecolor=fc,
-            edgecolor=fc, labelcolor="white", fontsize=5.5)
+    for label, x, y, fc in row1 + row2:
+        box(ax, x, y, 0.24, 0.18, label, facecolor=fc,
+            edgecolor=fc, labelcolor="white", fontsize=5.5, bold=True, pad=0.005)
 
-    # Arrows
-    edges = [
-        (0, 1), (1, 2), (1, 3), (2, 3), (3, 4), (4, 5), (4, 6), (5, 6), (6, 7)
-    ]
-    for a, b in edges:
-        x0, y0 = nodes[a][1], nodes[a][2]
-        x1, y1 = nodes[b][1], nodes[b][2]
-        draw_arrow(ax, x0 + 0.07*(1 if x1>x0 else -1),
-                   y0 + 0.07*(1 if y1>y0 else (-1 if y1<y0 else 0)),
-                   x1 - 0.07*(1 if x1>x0 else -1),
-                   y1 - 0.07*(1 if y1>y0 else (-1 if y1<y0 else 0)))
+    # Row 1 arrows
+    draw_arrow(ax, 0.32, 0.70, 0.38, 0.70)
+    draw_arrow(ax, 0.62, 0.70, 0.68, 0.70)
+
+    # Transition from Row 1 to Row 2: (0.80, 0.70) down to (0.20, 0.28)
+    # Down arrow from Tests to Benchmark
+    draw_arrow(ax, 0.80, 0.61, 0.80, 0.49, color=C["arrow"])
+    draw_arrow(ax, 0.80, 0.49, 0.20, 0.49, color=C["arrow"])
+    draw_arrow(ax, 0.20, 0.49, 0.20, 0.37, color=C["arrow"])
+
+    # Row 2 arrows (left to right: Benchmark -> Analysis -> Paper)
+    draw_arrow(ax, 0.32, 0.28, 0.38, 0.28)
+    draw_arrow(ax, 0.62, 0.28, 0.68, 0.28)
 
     savefig(fig, "fig_diagram_experiment_flowchart")
+
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

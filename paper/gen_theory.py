@@ -110,16 +110,19 @@ compared -> $O(log N)$ for standard linear probing.
 == F. Comparative Theoretical Summary
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (1.5fr, 1.1fr, 1.1fr, 1.0fr, 1.2fr, 1.3fr),
+    columns: (1.5fr, 1.3fr, 1.4fr, 1.1fr, 1.1fr, 1.2fr),
     stroke: none,
+    inset: (x: 5pt, y: 4pt),
     align: (left, center, center, center, center, left),
     table.hline(stroke: 1pt),
     [#strong[Technique]], [#strong[$C^+_alpha$]], [#strong[$C^-_alpha$]], [#strong[Max PSL]], [#strong[Clustering]], [#strong[Deletion Cost]],
     table.hline(stroke: 0.5pt),
     [Separate Chaining], [$1 + alpha/2$], [$e^(-alpha) + alpha$], [$O(log N / log log N)$], [None], [Node removal $O(1)$],
-    [Linear Probing], [$frac(1, 2)(1 + frac(1, 1-alpha))$], [$frac(1, 2)(1 + frac(1, (1-alpha)^2))$], [$O(log N)$], [Primary & Sec.], [Tombstone mark $O(1)$],
-    [Quadratic Probing], [$1 - ln(1-alpha) - frac(alpha, 2)$], [$frac(1, 1-alpha) - alpha - ln(1-alpha)$], [$O(log N)$], [Secondary only], [Tombstone mark $O(1)$],
+    [Linear Probing], [$1/2(1 + 1/(1-alpha))$], [$1/2(1 + 1/(1-alpha)^2)$], [$O(log N)$], [Primary & Sec.], [Tombstone mark $O(1)$],
+    [Quadratic Probing], [$1 - ln(1-alpha) - alpha/2$], [$1/(1-alpha) - alpha - ln(1-alpha)$], [$O(log N)$], [Secondary only], [Tombstone mark $O(1)$],
     [Robin Hood Hashing], [$approx 1 + alpha/2$], [$approx 1 + alpha/2$], [$O(log log N)$], [Primary (mitigated)], [Backward shift $O("PSL")$],
     table.hline(stroke: 1pt),
   ),

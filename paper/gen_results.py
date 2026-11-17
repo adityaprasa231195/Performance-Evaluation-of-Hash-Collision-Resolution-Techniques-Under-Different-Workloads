@@ -157,9 +157,12 @@ At the maximum evaluated scale of $N = 10^6$ (where table working sets exceed th
 *Deletion Mechanics:* Figure 4 illustrates deletion latency. At $N = 10^5$, Linear Probing records {get_val('LinearProbing', 100000, 'random', 'delete', 'median_ns')} ns, Quadratic Probing records {get_val('QuadraticProbing', 100000, 'random', 'delete', 'median_ns')} ns, Separate Chaining records {get_val('SeparateChaining', 100000, 'random', 'delete', 'median_ns')} ns, and Robin Hood records {get_val('RobinHood', 100000, 'random', 'delete', 'median_ns')} ns. Although Robin Hood's backward-shift compaction requires shifting elements in memory, the bounded nature of its probe sequence keeps this overhead remarkably low (only ~3-5 ns slower than tombstone marking) while entirely preventing table tombstone saturation.
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (0.9fr, 1.4fr, 1.5fr, 1.4fr, 1.4fr, 1.4fr),
+    columns: (1.0fr, 1.5fr, 1.5fr, 1.4fr, 1.4fr, 1.4fr),
     stroke: none,
+    inset: (x: 5pt, y: 3.5pt),
     align: (center, left, right, right, right, right),
     table.hline(stroke: 1pt),
     [#strong[Scale ($N$)]], [#strong[Algorithm]], [#strong[Insert (ns)]], [#strong[Hit (ns)]], [#strong[Miss (ns)]], [#strong[Delete (ns)]],
@@ -195,9 +198,12 @@ Figure 8 and Table 2 present the empirical probe sequence length (PSL) metrics, 
 ) <fig_probe_counts>
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (0.9fr, 1.4fr, 1.1fr, 1.0fr, 1.2fr, 1.0fr),
+    columns: (1.0fr, 1.5fr, 1.2fr, 1.1fr, 1.3fr, 1.1fr),
     stroke: none,
+    inset: (x: 5pt, y: 3.5pt),
     align: (center, left, right, right, right, right),
     table.hline(stroke: 1pt),
     [#strong[Scale ($N$)]], [#strong[Algorithm]], [#strong[Avg Probe]], [#strong[Max Probe]], [#strong[Collisions]], [#strong[Load ($alpha$)]],
@@ -238,9 +244,12 @@ Figures 7, 9, and 10 and Table 3 detail the performance sensitivity of each tech
 + *Duplicate-Heavy and Small-Range:* In duplicate-heavy workloads (only 10 distinct keys across 100,000 operations), all four implementations detect preexisting keys immediately, performing update-in-place operations without allocating new slots or triggering resizes. Hit latencies drop -> {get_val('SeparateChaining', 100000, 'duplicate_heavy', 'lookup_hit', 'median_ns')} ns for Separate Chaining, {get_val('LinearProbing', 100000, 'duplicate_heavy', 'lookup_hit', 'median_ns')} ns for Linear Probing, and {get_val('RobinHood', 100000, 'duplicate_heavy', 'lookup_hit', 'median_ns')} ns for Robin Hood.
 
 #figure(
+  placement: auto,
+  scope: "parent",
   table(
-    columns: (1.5fr, 1.4fr, 1.0fr, 1.0fr, 1.0fr, 0.9fr, 1.2fr),
+    columns: (1.6fr, 1.4fr, 1.1fr, 1.1fr, 1.0fr, 0.9fr, 1.2fr),
     stroke: none,
+    inset: (x: 5pt, y: 3.5pt),
     align: (left, left, right, right, right, right, right),
     table.hline(stroke: 1pt),
     [#strong[Distribution]], [#strong[Algorithm]], [#strong[Hit (ns)]], [#strong[Ins (ns)]], [#strong[Avg Prb]], [#strong[Max]], [#strong[Collisions]],
