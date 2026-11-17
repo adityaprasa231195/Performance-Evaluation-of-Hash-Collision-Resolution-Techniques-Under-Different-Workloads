@@ -245,21 +245,37 @@ def fig_diagram_linear_probing():
         ax.text(x, slot_y - slot_h/2 - 0.06, f"[{i}]", ha="center", fontsize=5.5,
                 color=C["gray"])
 
-    # Probe sequence for key with h(k)=1
-    probe_labels = ["Try 0: h(k)=1\n(occupied)", "Try 1: h+1\n(occupied)"]
-    for step, idx in enumerate([1, 2]):
-        px = xs[idx]
-        ax.annotate("", xy=(px, slot_y + slot_h/2 + 0.01),
-                    xytext=(px, 0.72),
-                    arrowprops=dict(arrowstyle="->", color=C["red"], lw=0.9))
-        ax.text(px, 0.75, probe_labels[step], ha="center", va="bottom", fontsize=4.8, color=C["red"])
+    # 1. Down arrow to slot 1: Initial hash
+    ax.annotate("", xy=(xs[1], slot_y + slot_h/2 + 0.01),
+                xytext=(xs[1], 0.72),
+                arrowprops=dict(arrowstyle="->", color=C["red"], lw=1.0))
+    ax.text(xs[1], 0.75, "Hash: h(k)=1\n(Occupied)", ha="center", va="bottom",
+            fontsize=4.8, color=C["red"])
 
-    # Insertion target at Tombstone (slot 3)
+    # 2. Hop arc from slot 1 to slot 2
+    ax.annotate("", xy=(xs[2], slot_y + slot_h/2),
+                xytext=(xs[1], slot_y + slot_h/2),
+                arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=-0.45",
+                               color=C["red"], lw=1.0))
+    ax.text((xs[1]+xs[2])/2, 0.58, "+1", ha="center", fontsize=5.2,
+            color=C["red"], weight="bold")
+    ax.text(xs[2], 0.65, "Occupied", ha="center", va="bottom",
+            fontsize=4.5, color=C["orange"], style="italic")
+
+    # 3. Hop arc from slot 2 to slot 3
+    ax.annotate("", xy=(xs[3], slot_y + slot_h/2),
+                xytext=(xs[2], slot_y + slot_h/2),
+                arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=-0.45",
+                               color=C["green"], lw=1.1))
+    ax.text((xs[2]+xs[3])/2, 0.58, "+1", ha="center", fontsize=5.2,
+            color=C["green"], weight="bold")
+
+    # 4. Target at slot 3 (Tombstone)
     ax.annotate("", xy=(xs[3], slot_y + slot_h/2 + 0.01),
                 xytext=(xs[3], 0.72),
                 arrowprops=dict(arrowstyle="->", color=C["green"], lw=1.1))
-    ax.text(xs[3], 0.75, "Try 2: h+2\nReuse [DEL]", ha="center", va="bottom", fontsize=4.8,
-            color=C["green"], weight="bold")
+    ax.text(xs[3], 0.75, "Reuse [DEL]\nInsert here!", ha="center", va="bottom",
+            fontsize=4.8, color=C["green"], weight="bold")
 
     # Tombstone explanation below
     ax.text(xs[3], 0.18, "Tombstone (lazy deletion)", ha="center", fontsize=5.0, color=C["red"], style="italic")
@@ -658,6 +674,7 @@ def fig5_load_factor_effect(df):
     ax.set_ylabel("Median insert latency (ns)", fontsize=8)
     ax.set_title(f"Load Factor Effect on Insert Performance (N={target_sz:,})", fontsize=9)
     ax.legend(fontsize=7, ncol=4)
+    ax.margins(y=0.25)
     ax.grid(axis="y", ls=":", lw=0.5, alpha=0.5)
     savefig(fig, "fig5_load_factor_effect")
 
@@ -677,9 +694,11 @@ def fig6_memory_comparison(df):
             v = bytes_per_entry * target_sz
         mems.append(v / 1024 / 1024)  # MB
     bars = ax.bar(IMPL_SHORT, mems, color=IMPL_COLORS, edgecolor="white", linewidth=0.5)
-    ax.bar_label(bars, fmt="%.2f MB", fontsize=6, padding=2)
+    max_m = max(mems) if mems else 10
+    ax.set_ylim(0, max_m * 1.30)
+    ax.bar_label(bars, fmt="%.2f MB", fontsize=6, padding=3)
     ax.set_ylabel("Memory usage (MB)", fontsize=8)
-    ax.set_title(f"Memory Usage at N={target_sz:,}", fontsize=9)
+    ax.set_title(f"Memory Usage at N={target_sz:,}", fontsize=9, pad=8)
     ax.grid(axis="y", ls=":", lw=0.5, alpha=0.5)
     savefig(fig, "fig6_memory_comparison")
 
@@ -705,7 +724,8 @@ def fig7_collision_frequency(df):
     ax.set_xticklabels([d.capitalize() for d in distributions])
     ax.set_xlabel("Key distribution", fontsize=8)
     ax.set_ylabel("Collision count", fontsize=8)
-    ax.set_title(f"Collision Frequency by Distribution (N={target_sz:,})", fontsize=9)
+    ax.set_title(f"Collision Frequency by Distribution (N={target_sz:,})", fontsize=9, pad=8)
+    ax.margins(y=0.25)
     ax.legend(fontsize=7, ncol=4)
     ax.grid(axis="y", ls=":", lw=0.5, alpha=0.5)
     savefig(fig, "fig7_collision_frequency")
@@ -733,7 +753,8 @@ def fig8_probe_counts(df):
     ax.set_xticks(x)
     ax.set_xticklabels(IMPL_SHORT)
     ax.set_ylabel("Probe count", fontsize=8)
-    ax.set_title(f"Probe Counts at N={target_sz:,}", fontsize=9)
+    ax.set_title(f"Probe Counts at N={target_sz:,}", fontsize=9, pad=8)
+    ax.margins(y=0.25)
     ax.legend(fontsize=7)
     ax.grid(axis="y", ls=":", lw=0.5, alpha=0.5)
     savefig(fig, "fig8_probe_counts")
@@ -762,7 +783,8 @@ def fig9_workload_comparison(df):
     ax.set_xticklabels(op_labels)
     ax.set_xlabel("Operation", fontsize=8)
     ax.set_ylabel("Median latency (ns)", fontsize=8)
-    ax.set_title(f"Mixed Workload Comparison (N={target_sz:,})", fontsize=9)
+    ax.set_title(f"Mixed Workload Comparison (N={target_sz:,})", fontsize=9, pad=8)
+    ax.margins(y=0.25)
     ax.legend(fontsize=7, ncol=4)
     ax.grid(axis="y", ls=":", lw=0.5, alpha=0.5)
     savefig(fig, "fig9_workload_comparison")
