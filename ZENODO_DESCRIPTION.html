@@ -1,0 +1,102 @@
+<h3>Performance Evaluation of Hash Collision Resolution Techniques Under Different Workloads</h3>
+
+<p>
+<b>Author:</b> Aditya Kumar Harishankar Prasad<br>
+<b>Email:</b> <a href="mailto:adityaprasa231195@gmail.com">adityaprasa231195@gmail.com</a><br>
+<b>GitHub Repository:</b> <a href="https://github.com/adityaprasa231195/Performance-Evaluation-of-Hash-Collision-Resolution-Techniques-Under-Different-Workloads" target="_blank">https://github.com/adityaprasa231195/Performance-Evaluation-of-Hash-Collision-Resolution-Techniques-Under-Different-Workloads</a><br>
+<b>Primary Artifacts:</b> 21-page IEEE two-column research paper (<code>paper/main.pdf</code>), independent Rust implementations, 70 automated correctness tests, 3,920 benchmark measurements, and 17 publication-quality vector figures.<br>
+<b>License:</b> MIT License (Code) &amp; Creative Commons Attribution 4.0 International (Manuscript &amp; Data)
+</p>
+
+<hr>
+
+<h4>1. Abstract &amp; Research Overview</h4>
+<p>
+Hash tables are foundational data structures utilized across compilers, database indices, operating system kernels, language runtimes, and high-throughput network stream engines. While standard theoretical models under the Simple Uniform Hashing Assumption (SUHA) predict uniform <i>O(1)</i> average-case complexity, real-world execution characteristics on modern superscalar processors are dictated by hardware cache hierarchies, spatial locality, branch predictability, and dynamic allocation latency.
+</p>
+<p>
+This open-access research repository provides a complete, academically rigorous, and fully reproducible comparative study evaluating the four primary hash collision resolution paradigms:
+</p>
+<ol>
+  <li><b>Separate Chaining (SC):</b> Closed addressing implemented via vector-of-buckets with dynamically allocated node vectors (<code>Vec&lt;Vec&lt;(i64, i64)&gt;&gt;</code>).</li>
+  <li><b>Linear Probing (LP):</b> Open addressing with sequential probe stride (<i>c = 1</i>), power-of-two table capacity bitmask indexing, and tombstone markers for deletion.</li>
+  <li><b>Quadratic Probing (QP):</b> Open addressing employing triangular quadratic displacement (<i>h(k, i) = (h(k) + i<sup>2</sup>) mod M</i>) with prime table capacities ensuring complete cycle coverage up to load factor &alpha; &le; 0.50.</li>
+  <li><b>Robin Hood Hashing (RH):</b> Open addressing with probe sequence length (PSL) displacement tracking, "rich-from-poor" item displacement, backward-shift deletion without tombstones, and early-termination search.</li>
+</ol>
+<p>
+All implementations operate on 64-bit integer key-value pairs (<code>(i64, i64)</code>), share an identical deterministic 64-bit FNV-1a hash function with an explicit seed, and do <b>not</b> rely on standard-library hash maps.
+</p>
+
+<hr>
+
+<h4>2. Key Empirical Findings</h4>
+<p>
+Extracted from 3,920 controlled trials across 5 dataset scales (10<sup>3</sup> to 10<sup>6</sup> keys), 7 synthetic key distributions (Uniform, Normal, Clustered, Sparse, Dense, Heavy-hitter, Sequential), and 4 core operations (Insert, Lookup Hit, Lookup Miss, Delete):
+</p>
+<ul>
+  <li><b>Hardware Cache Locality Dominance:</b> For dataset sizes fitting inside the CPU L3 cache (&le; 10<sup>5</sup> elements), <b>Linear Probing</b> achieves the lowest lookup latency (12.29 ns), outperforming all other techniques due to contiguous array layout maximizing CPU L1/L2 hardware prefetcher efficiency.</li>
+  <li><b>Primary Clustering Pathology in Linear Probing:</b> Under high load factors and non-uniform distributions, Linear Probing exhibits severe primary clustering, with maximum probe sequence lengths expanding up to 47–51 slots, degrading miss lookups and insertions.</li>
+  <li><b>Variance Compression in Robin Hood Hashing:</b> Robin Hood hashing compresses the probe distribution variance, strictly bounding maximum probe sequence length to &le; 12 across all scales and workloads. This produces deterministic query latencies and predictable tail performance, at the cost of a 2.14&times; insertion overhead (64.59 ns vs. 30.13 ns for LP) due to element displacement store cycles.</li>
+  <li><b>Pointer Indirection Penalty in Separate Chaining:</b> Separate Chaining suffers from dynamic allocation overhead and pointer chasing, consuming 1.39&times; more memory (11.08 MiB vs. 8.00 MiB at <i>N</i> = 10<sup>5</sup>). When table capacity exceeds the 25 MB L3 cache boundary (at <i>N</i> = 10<sup>6</sup>), insertion latency surges to 102.44 ns due to DRAM line refills and allocator overhead.</li>
+  <li><b>Quadratic Probing Tradeoff:</b> Quadratic Probing successfully prevents primary clustering while achieving the lowest overall memory footprint (4.58 MiB at <i>N</i> = 10<sup>5</sup>).</li>
+</ul>
+
+<hr>
+
+<h4>3. Package Structure</h4>
+<ul>
+  <li><code>paper/main.pdf</code>: Complete 21-page IEEE two-column formatted research paper.</li>
+  <li><code>paper/main.tex</code> &amp; <code>paper/paper.typ</code>: Source files in LaTeX (IEEEtran) and Typst.</li>
+  <li><code>src/</code>: Complete Rust source code for all four collision resolution algorithms and benchmark harnesses.</li>
+  <li><code>tests/correctness.rs</code>: 61 integration tests (and 9 unit tests) verifying correctness against <code>std::collections::BTreeMap</code>.</li>
+  <li><code>results/raw_experiments.csv</code>: 3,920 raw benchmark measurement rows across all distributions and scales.</li>
+  <li><code>results/summary_stats.csv</code>: 560 aggregated statistical summary rows (medians, IQRs, probe counts, memory).</li>
+  <li><code>plots/</code>: 17 publication-quality vector diagrams (7 algorithmic architectural diagrams and 10 empirical data graphs in PDF, SVG, and 300 DPI PNG).</li>
+  <li><code>01_Reference_Papers/literature_inventory.csv</code>: Reference inventory of 24 verified academic literature sources.</li>
+</ul>
+
+<hr>
+
+<h4>4. Hardware Testbed Environment</h4>
+<ul>
+  <li><b>Processor:</b> Intel Core i7-12700F (12 cores / 20 threads: 8 Performance cores @ 4.90 GHz, 4 Efficient cores @ 3.60 GHz)</li>
+  <li><b>Cache Hierarchy:</b> 32 KB L1d per core, 1.25 MB L2 per P-core, 25 MB shared L3 LLC</li>
+  <li><b>Memory:</b> 32 GB DDR4-3200 dual-channel</li>
+  <li><b>Operating System:</b> Linux x86_64 (CachyOS, kernel 6.13+, performance governor)</li>
+  <li><b>Toolchain:</b> rustc 1.100.0 (release mode with <code>opt-level=3</code> and thin LTO)</li>
+</ul>
+
+<hr>
+
+<h4>5. Reproduction Instructions</h4>
+<ol>
+  <li><b>Run automated correctness tests:</b><br>
+    <code>cargo test</code> (verifies all 70 unit and integration tests; 0 failures)
+  </li>
+  <li><b>Run full benchmark suite:</b><br>
+    <code>cargo run --release --bin experiment</code> (generates 3,920 trials in <code>results/raw_experiments.csv</code>)
+  </li>
+  <li><b>Compute statistical summary:</b><br>
+    <code>cargo run --release --bin stats_analysis</code> (generates <code>results/summary_stats.csv</code>)
+  </li>
+  <li><b>Re-generate figures:</b><br>
+    <code>python plots/plot_generation.py --csv results/summary_stats.csv</code>
+  </li>
+  <li><b>Compile manuscript:</b><br>
+    <code>typst compile paper/paper.typ paper/main.pdf</code>
+  </li>
+</ol>
+
+<hr>
+
+<h4>6. Citation</h4>
+<pre>
+@article{prasad2026hashperformance,
+  author    = {Aditya Kumar Harishankar Prasad},
+  title     = {Performance Evaluation of Hash Collision Resolution Techniques Under Different Workloads},
+  year      = {2026},
+  journal   = {Zenodo Research Repository},
+  doi       = {10.5281/zenodo.XXXXXXX},
+  url       = {https://github.com/adityaprasa231195/Performance-Evaluation-of-Hash-Collision-Resolution-Techniques-Under-Different-Workloads}
+}
+</pre>
